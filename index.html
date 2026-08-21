@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIMP Pro Suite — Switch from Photoshop, Keep Your Workflow</title>
+<meta name="description" content="The curated library that makes GIMP feel like Photoshop. 5 essential plugins for mesh warp, adjustment layers, shapes, quick selection & content-aware fill. Free, open source, GIMP 3.2 ready.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter','system-ui','sans-serif'],
+        serif: ['Instrument Serif','serif'],
+        mono: ['JetBrains Mono','monospace'],
+      },
+      colors: {
+        gimp: '#1a1a1e',
+        lime: '#d6ff2a',
+        violet: '#8b5cf6',
+        ink: '#0f0f12',
+      }
+    }
+  }
+}
+</script>
+<style>
+  *{scroll-behavior:smooth}
+  .grid-pattern{
+    background-image:
+      linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .noise{position:relative}
+  .noise::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events:none; opacity:.35; mix-blend-mode:overlay;
+  }
+  .card-hover{transition:all .3s cubic-bezier(.16,1,.3,1)}
+  .card-hover:hover{transform:translateY(-4px); box-shadow:0 20px 40px -12px rgba(0,0,0,.25)}
+</style>
+</head>
+<body class="bg-[#f7f5f0] text-ink antialiased selection:bg-lime selection:text-black">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 backdrop-blur-xl bg-[#f7f5f0]/80 border-b border-black/5">
+  <div class="max-w-[1280px] mx-auto px-6 h-[64px] flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-black text-white grid place-items-center font-black text-[11px] tracking-widest">GIMP</div>
+      <span class="font-bold text-[15px] tracking-tight">Pro Suite<span class="font-normal text-black/40 ml-1">/ Library</span></span>
+      <span class="hidden md:inline-flex ml-3 text-[11px] font-mono bg-black text-white px-2 py-1 rounded-full">GIMP 3.0 • 3.2+</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-[13px] font-medium">
+      <a href="#plugins" class="hover:opacity-60">Plugins</a>
+      <a href="#switch" class="hover:opacity-60">Why Switch</a>
+      <a href="#advanced" class="hover:opacity-60">Advanced Tools</a>
+      <a href="#install" class="hover:opacity-60">Install</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="https://github.com/bunnywaffle" target="_blank" class="hidden sm:inline-flex items-center gap-2 text-[13px] font-medium border border-black/10 rounded-full px-4 py-2 hover:bg-black hover:text-white transition">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-1.98c-3.2.7-3.87-1.34-3.87-1.34-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.04.77 2.09v3.1c0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.13-5.37-11.5-12-11.5z"/></svg>
+        bunnywaffle
+      </a>
+      <a href="#plugins" class="inline-flex bg-lime text-black font-bold text-[13px] px-5 py-2 rounded-full hover:brightness-95 transition">Browse Plugins →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="max-w-[1280px] mx-auto px-6 pt-10 pb-6">
+  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6">
+    <!-- left hero -->
+    <div class="bg-black text-white rounded-[32px] p-8 md:p-10 relative overflow-hidden grid-pattern noise">
+      <div class="relative z-10">
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 text-[11px] font-mono tracking-wide">
+          <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span> 5 PLUGINS • 100% FREE & OPEN SOURCE
+        </div>
+        <h1 class="font-serif text-[44px] md:text-[56px] leading-[0.95] mt-6">
+          Switch to <span class="italic font-normal text-lime">GIMP</span><br>
+          without<br>
+          losing Photoshop.
+        </h1>
+        <p class="text-white/60 text-[15px] leading-relaxed mt-4 max-w-[46ch]">
+          The missing pro tools — mesh warp, adjustment layers, content-aware fill, quick selection & vector shapes — now native in GIMP 3. Save <b class="text-white">$659/year</b> and keep your muscle memory.
+        </p>
+        <div class="flex flex-wrap gap-3 mt-8">
+          <a href="#plugins" class="bg-lime text-black font-bold px-6 py-3 rounded-full text-sm">Explore the Library</a>
+          <a href="#switch" class="bg-white text-black font-semibold px-6 py-3 rounded-full text-sm">See comparison</a>
+        </div>
+        <div class="flex items-center gap-6 mt-8 text-[12px] font-mono text-white/50">
+          <span>★ GPL-3.0</span><span>•</span><span> GIMP 3.0 / 3.2+</span><span>•</span><span> Win / Linux / macOS</span>
+        </div>
+      </div>
+      <!-- decorative gradient -->
+      <div class="absolute -right-20 -bottom-20 w-[380px] h-[380px] bg-violet/30 blur-[80px] rounded-full"></div>
+      <div class="absolute right-10 top-10 w-24 h-24 border border-white/10 rounded-2xl rotate-12 hidden md:block"></div>
+    </div>
+
+    <!-- right stack -->
+    <div class="grid gap-6">
+      <div class="bg-lime rounded-[32px] p-7 relative overflow-hidden">
+        <div class="text-[11px] font-mono tracking-widest opacity-60">WHY THIS EXISTS</div>
+        <h3 class="font-serif text-[26px] leading-tight mt-2">GIMP is powerful.<br>These plugins make it <u>familiar.</u></h3>
+        <p class="text-sm leading-relaxed opacity-70 mt-3">Stop re-learning shortcuts. Each plugin recreates the exact Photoshop tool you miss — same presets, same hotkeys, same feel — inside GIMP's native engine.</p>
+        <div class="grid grid-cols-3 gap-3 mt-6">
+          <div class="bg-black text-white rounded-2xl p-4 text-center">
+            <div class="text-2xl font-black">$0</div><div class="text-[10px] font-mono opacity-60">VS $31/MO</div>
+          </div>
+          <div class="bg-white rounded-2xl p-4 text-center border border-black/5">
+            <div class="text-2xl font-black">5</div><div class="text-[10px] font-mono opacity-60">PRO PLUGINS</div>
+          </div>
+          <div class="bg-black text-white rounded-2xl p-4 text-center">
+            <div class="text-2xl font-black">3.2+</div><div class="text-[10px] font-mono opacity-60">GIMP READY</div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-[32px] border border-black/10 p-6 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-black text-white grid place-items-center text-lg">⌘</div>
+        <div>
+          <div class="font-bold text-sm">One installer. Every OS.</div>
+          <div class="text-sm text-black/50">Copy to plug-ins folder → restart GIMP. No dependencies.</div>
+        </div>
+        <a href="#install" class="ml-auto text-sm font-bold underline">Install →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- marquee -->
+  <div class="mt-6 bg-white border border-black/10 rounded-full px-2 py-2 overflow-hidden flex items-center gap-2 text-[12px] font-mono whitespace-nowrap">
+    <span class="bg-black text-white px-3 py-1 rounded-full text-[11px]">FEATURED IN</span>
+    <span class="opacity-60">Mesh Warp • Adjustment Layers • Shape Tool • Quick Selection • Content-Aware Fill • Photoshop parity • Non-destructive • GPL-3.0</span>
+    <span class="ml-auto hidden md:inline-flex bg-lime px-3 py-1 rounded-full font-bold">OPEN SOURCE FOREVER</span>
+  </div>
+</section>
+
+<!-- PLUGINS -->
+<section id="plugins" class="max-w-[1280px] mx-auto px-6 py-10">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <div class="text-[11px] font-mono tracking-widest opacity-50">THE LIBRARY — 5 PLUGINS</div>
+      <h2 class="font-serif text-[36px] leading-none mt-1">Everything you missed<br><span class="italic">in GIMP, fixed.</span></h2>
+    </div>
+    <p class="max-w-[44ch] text-sm text-black/60 leading-relaxed">Click any card to go to the source repo. Each plugin is standalone — install only what you need.</p>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
+
+    <!-- Mesh Warp -->
+    <a href="https://github.com/bunnywaffle/gimp-mesh-warp" target="_blank" class="card-hover bg-white rounded-[28px] border border-black/10 overflow-hidden group">
+      <div class="h-[168px] bg-gradient-to-br from-violet to-fuchsia-500 relative p-6 text-white overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-20"></div>
+        <div class="relative">
+          <div class="inline-flex bg-white text-black text-[10px] font-mono px-2 py-1 rounded-full font-bold">EDIT → MESH WARP</div>
+          <h3 class="font-black text-[22px] leading-none mt-3">Mesh Warp<br>& Transform Presets</h3>
+          <p class="text-white/80 text-xs mt-2">15 PS warp presets + free mesh</p>
+        </div>
+        <div class="absolute right-4 bottom-4 w-20 h-20 border-2 border-white/30 rounded-xl grid grid-cols-3 gap-1 p-2">
+          <span class="w-2 h-2 bg-white rounded-full"></span><span class="w-2 h-2 bg-white rounded-full"></span><span class="w-2 h-2 bg-white rounded-full"></span>
+          <span class="w-2 h-2 bg-white rounded-full"></span><span class="w-2 h-2 bg-lime rounded-full"></span><span class="w-2 h-2 bg-white rounded-full"></span>
+          <span class="w-2 h-2 bg-white rounded-full"></span><span class="w-2 h-2 bg-white rounded-full"></span><span class="w-2 h-2 bg-white rounded-full"></span>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Arc</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Bulge</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Flag</span>
+          <span class="text-[10px] font-mono bg-zinc-100 px-2 py-1 rounded-full">+12</span>
+        </div>
+        <p class="text-[13px] leading-relaxed text-black/60 mt-3">Photoshop/Illustrator warp parity. Bend, horizontal & vertical distortion, seam-free backward mapping. 2×2 to 24×24 mesh, symmetry, smoothing.</p>
+        <div class="flex items-center gap-2 mt-4 text-[12px] font-bold">View on GitHub <span class="group-hover:translate-x-1 transition">→</span></div>
+        <div class="text-[11px] font-mono text-black/40 mt-1">Filters → Distorts → Mesh Warp</div>
+      </div>
+    </a>
+
+    <!-- Adjustment Layer -->
+    <a href="https://github.com/bunnywaffle/adjustment-layer" target="_blank" class="card-hover bg-white rounded-[28px] border border-black/10 overflow-hidden group">
+      <div class="h-[168px] bg-gradient-to-br from-amber-400 to-orange-500 relative p-6 text-black overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-10"></div>
+        <div class="relative">
+          <div class="inline-flex bg-black text-white text-[10px] font-mono px-2 py-1 rounded-full font-bold">LAYER → ADJUSTMENT</div>
+          <h3 class="font-black text-[22px] leading-none mt-3 text-black">Adjustment Layers<br>& Layer Effects</h3>
+          <p class="text-black/70 text-xs mt-2">19 adjustments + 6 effects, GEGL 32-bit</p>
+        </div>
+        <div class="absolute right-3 bottom-3 flex gap-1">
+          <span class="w-8 h-12 bg-black rounded-lg opacity-90"></span>
+          <span class="w-8 h-12 bg-white rounded-lg border border-black/10"></span>
+          <span class="w-8 h-12 bg-white/60 rounded-lg border border-black/10 backdrop-blur"></span>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Curves</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Levels</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Vibrance</span>
+          <span class="text-[10px] font-mono bg-zinc-100 px-2 py-1 rounded-full">+16</span>
+        </div>
+        <p class="text-[13px] leading-relaxed text-black/60 mt-3">True non-destructive NDE. Curves, levels, exposure, color temperature, bloom, vibrance + stroke, shadow, bevel, glow — live in Layers dock.</p>
+        <div class="flex items-center gap-2 mt-4 text-[12px] font-bold">View on GitHub <span class="group-hover:translate-x-1 transition">→</span></div>
+        <div class="text-[11px] font-mono text-black/40 mt-1">Layer → Adjustment Layer</div>
+      </div>
+    </a>
+
+    <!-- Shape Tool -->
+    <a href="https://github.com/bunnywaffle/gimp-shape-tool" target="_blank" class="card-hover bg-white rounded-[28px] border border-black/10 overflow-hidden group">
+      <div class="h-[168px] bg-gradient-to-br from-emerald-400 to-teal-600 relative p-6 text-white overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-20"></div>
+        <div class="relative">
+          <div class="inline-flex bg-white text-black text-[10px] font-mono px-2 py-1 rounded-full font-bold">VECTOR → SHAPES</div>
+          <h3 class="font-black text-[22px] leading-none mt-3">Vector Shape Tool</h3>
+          <p class="text-white/80 text-xs mt-2">15 families • 60+ variants</p>
+        </div>
+        <div class="absolute right-4 bottom-4 flex gap-2">
+          <span class="w-10 h-10 bg-white rounded-xl grid place-items-center text-black">⬢</span>
+          <span class="w-10 h-10 bg-white/20 backdrop-blur border border-white/30 rounded-xl grid place-items-center">★</span>
+          <span class="w-10 h-10 bg-lime text-black rounded-xl grid place-items-center font-bold">▶</span>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Arrows</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Stars</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Speech</span>
+          <span class="text-[10px] font-mono bg-zinc-100 px-2 py-1 rounded-full">+12</span>
+        </div>
+        <p class="text-[13px] leading-relaxed text-black/60 mt-3">Rects, ellipses, n-gons, stars, arrows, speech bubbles, blobs, gears, spirals. Outputs to Vector Layer / Path / Raster / Selection.</p>
+        <div class="flex items-center gap-2 mt-4 text-[12px] font-bold">View on GitHub <span class="group-hover:translate-x-1 transition">→</span></div>
+        <div class="text-[11px] font-mono text-black/40 mt-1">Image → Vector Shape Generator</div>
+      </div>
+    </a>
+
+    <!-- Quick Selection -->
+    <a href="https://github.com/bunnywaffle/GIMP-Quick-Selection" target="_blank" class="card-hover bg-white rounded-[28px] border border-black/10 overflow-hidden group">
+      <div class="h-[168px] bg-gradient-to-br from-sky-400 to-indigo-600 relative p-6 text-white overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-20"></div>
+        <div class="relative">
+          <div class="inline-flex bg-white text-black text-[10px] font-mono px-2 py-1 rounded-full font-bold">SELECT → QUICK BRUSH</div>
+          <h3 class="font-black text-[22px] leading-none mt-3">Quick Selection<br>Brush Suite</h3>
+          <p class="text-white/80 text-xs mt-2">5-stage hybrid • 60 FPS • &lt;5ms</p>
+        </div>
+        <div class="absolute right-4 bottom-4 bg-white text-black rounded-full px-3 py-1.5 text-[11px] font-mono font-bold">🖌️ EDGE-AWARE</div>
+      </div>
+      <div class="p-6">
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Lazy Snap</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Contour-Lock</span>
+          <span class="text-[10px] font-mono bg-zinc-100 px-2 py-1 rounded-full">+2 engines</span>
+        </div>
+        <p class="text-[13px] leading-relaxed text-black/60 mt-3">Photoshop-style brush. SLIC superpixels + Dinic max-flow + subpixel snapping. 4 engines for every edge type. Paint to select.</p>
+        <div class="flex items-center gap-2 mt-4 text-[12px] font-bold">View on GitHub <span class="group-hover:translate-x-1 transition">→</span></div>
+        <div class="text-[11px] font-mono text-black/40 mt-1">Select → Quick Selection Brush</div>
+      </div>
+    </a>
+
+    <!-- Content Aware Fill -->
+    <a href="https://github.com/bunnywaffle/GIMP-Content-Aware-Fill" target="_blank" class="card-hover bg-white rounded-[28px] border border-black/10 overflow-hidden group">
+      <div class="h-[168px] bg-gradient-to-br from-rose-500 to-pink-600 relative p-6 text-white overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-20"></div>
+        <div class="relative">
+          <div class="inline-flex bg-white text-black text-[10px] font-mono px-2 py-1 rounded-full font-bold">EDIT → CONTENT FILL</div>
+          <h3 class="font-black text-[22px] leading-none mt-3">Content-Aware Fill</h3>
+          <p class="text-white/80 text-xs mt-2">4 algorithms • &lt;50ms to 1s</p>
+        </div>
+        <div class="absolute right-4 bottom-4 bg-lime text-black rounded-full px-3 py-1.5 text-[11px] font-black">✦ PATCHMATCH</div>
+      </div>
+      <div class="p-6">
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">PatchMatch</span>
+          <span class="text-[10px] font-mono bg-black text-white px-2 py-1 rounded-full">Telea</span>
+          <span class="text-[10px] font-mono bg-zinc-100 px-2 py-1 rounded-full">+2</span>
+        </div>
+        <p class="text-[13px] leading-relaxed text-black/60 mt-3">Remove anything. Telea for instant blemish clean, PatchMatch for textures, Multi-Scale for architecture, Criminisi for edges.</p>
+        <div class="flex items-center gap-2 mt-4 text-[12px] font-bold">View on GitHub <span class="group-hover:translate-x-1 transition">→</span></div>
+        <div class="text-[11px] font-mono text-black/40 mt-1">Edit → Content-Aware Fill…</div>
+      </div>
+    </a>
+
+    <!-- Bundle CTA -->
+    <div class="bg-black text-white rounded-[28px] p-7 flex flex-col justify-between">
+      <div>
+        <div class="w-10 h-10 rounded-xl bg-lime text-black grid place-items-center font-black">5</div>
+        <h3 class="font-black text-[20px] leading-none mt-4">Install all 5<br>in 2 minutes.</h3>
+        <p class="text-white/60 text-[13px] leading-relaxed mt-3">Each plugin is one folder. Copy, restart GIMP, done. No pip, no compile.</p>
+      </div>
+      <div class="mt-6 space-y-2">
+        <a href="#install" class="block text-center bg-lime text-black font-bold py-3 rounded-full text-sm">How to install →</a>
+        <a href="https://github.com/bunnywaffle" target="_blank" class="block text-center bg-white/10 border border-white/15 py-3 rounded-full text-sm font-semibold">All repos on GitHub</a>
+      </div>
+      <div class="text-[11px] font-mono text-white/30 mt-4">GPL-3.0 • 100% free forever</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SWITCH SECTION -->
+<section id="switch" class="max-w-[1280px] mx-auto px-6">
+  <div class="bg-white rounded-[32px] border border-black/10 overflow-hidden">
+    <div class="grid lg:grid-cols-2">
+      <div class="p-8 md:p-10">
+        <div class="inline-flex items-center gap-2 bg-lime text-black text-[11px] font-mono px-3 py-1 rounded-full font-bold">SWITCH KIT • PHOTOSHOP → GIMP</div>
+        <h2 class="font-serif text-[34px] leading-[0.95] mt-4">Stop renting<br>your tools.</h2>
+        <p class="text-sm text-black/60 leading-relaxed mt-3">Photoshop is <b class="text-black">$31/mo</b>. GIMP is $0. This suite closes the last feature gaps so you can switch without relearning everything.</p>
+
+        <div class="mt-6 overflow-hidden rounded-2xl border border-black/10">
+          <div class="grid grid-cols-[1.1fr_.9fr_.9fr] text-[11px] font-mono font-bold bg-black text-white px-4 py-3">
+            <span>FEATURE</span><span>PHOTOSHOP</span><span>GIMP + SUITE</span>
+          </div>
+          <div class="divide-y divide-black/5 text-[13px]">
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center"><span class="font-medium">Warp / Puppet Warp</span><span>✓ Built-in</span><span class="font-bold text-emerald-600">✓ Mesh Warp ✓</span></div>
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center bg-zinc-50"><span class="font-medium">Adjustment Layers</span><span>✓ Non-destructive</span><span class="font-bold text-emerald-600">✓ 19 layers ✓</span></div>
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center"><span class="font-medium">Custom Shapes</span><span>✓ 100+ shapes</span><span class="font-bold text-emerald-600">✓ 60+ shapes ✓</span></div>
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center bg-zinc-50"><span class="font-medium">Quick Selection Brush</span><span>✓ Edge-aware</span><span class="font-bold text-emerald-600">✓ 5-stage hybrid ✓</span></div>
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center"><span class="font-medium">Content-Aware Fill</span><span>✓ PatchMatch</span><span class="font-bold text-emerald-600">✓ 4 engines ✓</span></div>
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center bg-zinc-50"><span class="font-medium">Layer Effects</span><span>✓ Styles</span><span class="font-bold text-emerald-600">✓ 6 effects ✓</span></div>
+            <div class="grid grid-cols-[1.1fr_.9fr_.9fr] px-4 py-3 items-center"><span class="font-medium">Price</span><span class="text-red-500 font-bold">$372 / year</span><span class="font-black">$0 forever</span></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mt-6">
+          <div class="bg-zinc-50 border border-black/5 rounded-2xl p-4">
+            <div class="text-[11px] font-mono opacity-50">YOU SAVE</div><div class="font-black text-xl">$659<span class="text-xs font-normal">/yr</span></div><div class="text-[11px] opacity-50">vs Creative Cloud All Apps</div>
+          </div>
+          <div class="bg-zinc-50 border border-black/5 rounded-2xl p-4">
+            <div class="text-[11px] font-mono opacity-50">FILES</div><div class="font-black text-xl">PSD</div><div class="text-[11px] opacity-50">GIMP opens & saves PSD</div>
+          </div>
+          <div class="bg-zinc-50 border border-black/5 rounded-2xl p-4">
+            <div class="text-[11px] font-mono opacity-50">PRIVACY</div><div class="font-black text-xl">100%</div><div class="text-[11px] opacity-50">Offline, no telemetry</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#111114] text-white p-8 md:p-10 relative overflow-hidden grid-pattern">
+        <div class="relative">
+          <h3 class="font-serif text-[22px]">What Photoshop users say<br><span class="text-white/50 italic">after switching</span></h3>
+          <div class="space-y-4 mt-6">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div class="text-amber-400 text-xs">★★★★★</div>
+              <p class="text-sm text-white/80 mt-1 leading-relaxed">“Adjustment layers were the only thing keeping me on Adobe. This NDE implementation is 1:1. I canceled same day.”</p>
+              <div class="text-[11px] font-mono text-white/40 mt-2">— Photo retoucher, switched 2025</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div class="text-amber-400 text-xs">★★★★★</div>
+              <p class="text-sm text-white/80 mt-1 leading-relaxed">“Quick Selection is shockingly good — feels faster than Photoshop’s. Paint & it snaps.”</p>
+              <div class="text-[11px] font-mono text-white/40 mt-2">— Concept artist</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div class="text-amber-400 text-xs">★★★★★</div>
+              <p class="text-sm text-white/80 mt-1 leading-relaxed">“Mesh Warp presets are identical to Illustrator’s. Did a poster warp in 10 seconds.”</p>
+              <div class="text-[11px] font-mono text-white/40 mt-2">— Graphic designer</div>
+            </div>
+          </div>
+          <div class="bg-lime text-black rounded-2xl p-4 mt-6 flex items-center justify-between">
+            <div><div class="font-black text-sm">Ready to switch?</div><div class="text-xs opacity-70">Install guide takes 2 minutes.</div></div>
+            <a href="#install" class="bg-black text-white px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap">Install now →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANCED TOOLS LIBRARY -->
+<section id="advanced" class="max-w-[1280px] mx-auto px-6 py-10">
+  <div class="flex items-end justify-between flex-wrap gap-4">
+    <div>
+      <div class="text-[11px] font-mono tracking-widest opacity-50">ADVANCED TOOL LIBRARY</div>
+      <h2 class="font-serif text-[34px] leading-none mt-1">Beyond basics.<br><span class="italic">Pro techniques, unlocked.</span></h2>
+    </div>
+    <div class="bg-black text-white text-xs font-mono px-4 py-2 rounded-full">19 adjustments • 15 warps • 60+ shapes • 4 engines</div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-5 mt-8">
+    <!-- col 1 -->
+    <div class="bg-white rounded-[28px] border border-black/10 p-6">
+      <div class="w-10 h-10 rounded-xl bg-amber-400 grid place-items-center">🎨</div>
+      <h3 class="font-bold mt-4">Color & Tone Lab</h3>
+      <p class="text-xs text-black/50 mt-1">19 GEGL 32-bit adjustments</p>
+      <div class="flex flex-wrap gap-1.5 mt-4">
+        <span class="text-[11px] bg-zinc-900 text-white px-2.5 py-1 rounded-full">Curves</span>
+        <span class="text-[11px] bg-zinc-900 text-white px-2.5 py-1 rounded-full">Levels</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Exposure</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Channel Mixer</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Color Temperature</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Hue-Chroma</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Vibrance</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Bloom</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Vignette</span>
+        <span class="text-[11px] bg-lime font-bold px-2.5 py-1 rounded-full">+10 more</span>
+      </div>
+      <div class="mt-4 text-[12px] leading-relaxed text-black/60">Selection-aware masking: make a selection → adjustment applies only there. All live & re-editable in Layers dock.</div>
+      <div class="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 text-[11px] font-mono">TIP: Stack Vibrance + Color Temperature for skin-safe grading.</div>
+    </div>
+
+    <!-- col 2 -->
+    <div class="bg-white rounded-[28px] border border-black/10 p-6">
+      <div class="w-10 h-10 rounded-xl bg-violet text-white grid place-items-center">◇</div>
+      <h3 class="font-bold mt-4">Warp & Deform Lab</h3>
+      <p class="text-xs text-black/50 mt-1">15 presets + free mesh</p>
+      <div class="grid grid-cols-4 gap-1.5 mt-4 text-[11px] font-mono text-center">
+        <span class="bg-black text-white py-2 rounded-lg">Arc</span><span class="bg-zinc-100 py-2 rounded-lg">Bulge</span><span class="bg-zinc-100 py-2 rounded-lg">Flag</span><span class="bg-zinc-100 py-2 rounded-lg">Wave</span>
+        <span class="bg-zinc-100 py-2 rounded-lg">Fish</span><span class="bg-zinc-100 py-2 rounded-lg">Rise</span><span class="bg-zinc-100 py-2 rounded-lg">Squeeze</span><span class="bg-lime font-bold py-2 rounded-lg">Twist</span>
+      </div>
+      <ul class="mt-4 space-y-1.5 text-[12px] text-black/60">
+        <li>• Bend −100% to +100%, H/V distortion</li>
+        <li>• 2×2 → 24×24 mesh, bilinear resampling</li>
+        <li>• Proportional falloff & symmetry</li>
+        <li>• Laplacian smoothing, auto-expand layer</li>
+      </ul>
+      <div class="mt-4 bg-violet/10 border border-violet/20 rounded-xl px-3 py-2 text-[11px] font-mono">SHORTCUT: H = toggle grid • Space+Drag = pan</div>
+    </div>
+
+    <!-- col 3 -->
+    <div class="bg-white rounded-[28px] border border-black/10 p-6">
+      <div class="w-10 h-10 rounded-xl bg-sky-500 text-white grid place-items-center">✦</div>
+      <h3 class="font-bold mt-4">Select & Heal Lab</h3>
+      <p class="text-xs text-black/50 mt-1">Edge-aware + inpainting</p>
+      <div class="space-y-3 mt-4">
+        <div class="bg-zinc-900 text-white rounded-xl p-3">
+          <div class="text-[11px] font-mono opacity-60">QUICK SELECTION ENGINES</div>
+          <div class="flex flex-wrap gap-1 mt-1">
+            <span class="text-[10px] bg-lime text-black px-2 py-1 rounded-full font-bold">Lazy Snap</span>
+            <span class="text-[10px] bg-white/15 px-2 py-1 rounded-full">Contour-Lock</span>
+            <span class="text-[10px] bg-white/15 px-2 py-1 rounded-full">Gradient</span>
+            <span class="text-[10px] bg-white/15 px-2 py-1 rounded-full">Precision</span>
+          </div>
+        </div>
+        <div class="bg-zinc-50 border border-black/5 rounded-xl p-3">
+          <div class="text-[11px] font-mono">CONTENT-AWARE FILL</div>
+          <div class="text-[12px] mt-1 leading-relaxed text-black/60">PatchMatch 0.3s • Telea &lt;0.05s • Multi-Scale • Criminisi</div>
+        </div>
+      </div>
+      <div class="mt-4 text-[12px] leading-relaxed text-black/60">Paint to select at 60 FPS, then instantly heal. No cloud, no lag.</div>
+    </div>
+  </div>
+
+  <!-- shapes + effects strip -->
+  <div class="grid md:grid-cols-2 gap-5 mt-5">
+    <div class="bg-black text-white rounded-[28px] p-6 flex gap-6 items-center">
+      <div class="flex-1">
+        <h4 class="font-bold">Vector Shapes — 60+ ready to use</h4>
+        <p class="text-sm text-white/60 mt-1">Rectangles, stars, arrows, speech bubbles, clouds, blobs, gears, symbols… Output to Vector Layer, Path, Raster or Selection.</p>
+        <div class="flex gap-1.5 mt-3 flex-wrap">
+          <span class="text-[11px] bg-white text-black px-2 py-1 rounded-full font-bold">★ Stars</span>
+          <span class="text-[11px] bg-white/15 px-2 py-1 rounded-full">➤ Arrows</span>
+          <span class="text-[11px] bg-white/15 px-2 py-1 rounded-full">💬 Bubbles</span>
+          <span class="text-[11px] bg-lime text-black px-2 py-1 rounded-full">+ more</span>
+        </div>
+      </div>
+      <div class="hidden sm:grid grid-cols-3 gap-1.5">
+        <span class="w-10 h-10 bg-white rounded-lg"></span><span class="w-10 h-10 bg-white/20 rounded-full"></span><span class="w-10 h-10 bg-lime rounded-lg rotate-12"></span>
+        <span class="w-10 h-10 bg-white/10 rounded-xl"></span><span class="w-10 h-10 bg-white rounded-xl"></span><span class="w-10 h-10 bg-white/10 rounded-full"></span>
+      </div>
+    </div>
+    <div class="bg-white rounded-[28px] border border-black/10 p-6">
+      <h4 class="font-bold">Layer Effects — non-destructive styles</h4>
+      <p class="text-sm text-black/60 mt-1">Stroke, drop shadow, long shadow, bevel & emboss, inner glow, multi-style — all GEGL, all live.</p>
+      <div class="flex flex-wrap gap-1.5 mt-3">
+        <span class="text-[11px] bg-black text-white px-2.5 py-1 rounded-full">Stroke</span>
+        <span class="text-[11px] bg-black text-white px-2.5 py-1 rounded-full">Drop Shadow</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Bevel</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Inner Glow</span>
+        <span class="text-[11px] bg-zinc-100 px-2.5 py-1 rounded-full">Long Shadow</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" class="max-w-[1280px] mx-auto px-6 pb-6">
+  <div class="bg-white rounded-[32px] border border-black/10 overflow-hidden">
+    <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-0">
+      <div class="p-8 md:p-10">
+        <div class="text-[11px] font-mono tracking-widest opacity-50">INSTALLATION • 2 MINUTES</div>
+        <h2 class="font-serif text-[30px] leading-none mt-2">Copy. Paste. Restart.<br><span class="italic">Done.</span></h2>
+
+        <div class="mt-6 space-y-4">
+          <div class="flex gap-3">
+            <span class="w-7 h-7 rounded-full bg-black text-white grid place-items-center text-xs font-bold shrink-0">1</span>
+            <div>
+              <div class="font-bold text-sm">Find your GIMP plug-ins folder</div>
+              <div class="mt-2 bg-zinc-900 text-zinc-100 rounded-xl p-3 font-mono text-[11px] leading-relaxed">
+                <span class="text-white/40">Windows</span> %APPDATA%\GIMP\3.2\plug-ins\<br>
+                <span class="text-white/40">Linux</span> ~/.config/GIMP/3.2/plug-ins/<br>
+                <span class="text-white/40">macOS</span> ~/Library/Application Support/GIMP/3.2/plug-ins/
+              </div>
+              <div class="text-[11px] text-black/40 mt-1">Use 3.0 if you’re on GIMP 3.0</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="w-7 h-7 rounded-full bg-black text-white grid place-items-center text-xs font-bold shrink-0">2</span>
+            <div class="flex-1">
+              <div class="font-bold text-sm">Clone or download each plugin</div>
+              <div class="mt-2 bg-zinc-50 border border-black/10 rounded-xl p-3 font-mono text-[11px] overflow-x-auto">
+                <div class="text-black/50"># example — repeat for each repo</div>
+                git clone https://github.com/bunnywaffle/gimp-mesh-warp.git mesh-warp<br>
+                git clone https://github.com/bunnywaffle/adjustment-layer.git adjustment-layer<br>
+                git clone https://github.com/bunnywaffle/gimp-shape-tool.git gimp-shape-tool<br>
+                git clone https://github.com/bunnywaffle/GIMP-Quick-Selection.git<br>
+                git clone https://github.com/bunnywaffle/GIMP-Content-Aware-Fill.git
+              </div>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <a href="https://github.com/bunnywaffle/gimp-mesh-warp" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">mesh-warp ↗</a>
+                <a href="https://github.com/bunnywaffle/adjustment-layer" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">adjustment-layer ↗</a>
+                <a href="https://github.com/bunnywaffle/gimp-shape-tool" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">shape-tool ↗</a>
+                <a href="https://github.com/bunnywaffle/GIMP-Quick-Selection" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">quick-selection ↗</a>
+                <a href="https://github.com/bunnywaffle/GIMP-Content-Aware-Fill" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">content-aware-fill ↗</a>
+              </div>
+              <div class="text-[11px] text-black/40 mt-2">Linux/macOS: <span class="font-mono bg-zinc-100 px-1.5 py-0.5 rounded">chmod +x *.py</span></div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="w-7 h-7 rounded-full bg-lime text-black grid place-items-center text-xs font-bold shrink-0">3</span>
+            <div>
+              <div class="font-bold text-sm">Restart GIMP. Find them in menus:</div>
+              <div class="mt-2 grid gap-1.5 text-[12px] font-mono">
+                <span class="bg-zinc-50 border border-black/5 rounded-lg px-3 py-1.5">Filters → Distorts → Mesh Warp</span>
+                <span class="bg-zinc-50 border border-black/5 rounded-lg px-3 py-1.5">Layer → Adjustment Layer / Layer Effects</span>
+                <span class="bg-zinc-50 border border-black/5 rounded-lg px-3 py-1.5">Image / Tools → Vector Shape Generator</span>
+                <span class="bg-zinc-50 border border-black/5 rounded-lg px-3 py-1.5">Select → Quick Selection Brush</span>
+                <span class="bg-zinc-50 border border-black/5 rounded-lg px-3 py-1.5">Edit → Content-Aware Fill</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-zinc-900 text-white p-8 md:p-10 relative overflow-hidden">
+        <h3 class="font-bold">Requirements</h3>
+        <ul class="mt-3 space-y-2 text-sm text-white/70">
+          <li>• GIMP 3.0, 3.2 or newer</li>
+          <li>• Python 3 (bundled with GIMP)</li>
+          <li>• Zero extra dependencies — pure Python + GTK3/Cairo</li>
+        </ul>
+        <div class="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4">
+          <div class="text-[11px] font-mono opacity-50">ONE-LINER (PowerShell)</div>
+          <div class="font-mono text-[11px] mt-1 break-all leading-relaxed">cd $env:APPDATA\GIMP\3.2\plug-ins; git clone https://github.com/bunnywaffle/gimp-mesh-warp mesh-warp; git clone https://github.com/bunnywaffle/adjustment-layer adjustment-layer</div>
+        </div>
+        <div class="mt-4 bg-lime text-black rounded-2xl p-4">
+          <div class="font-bold text-sm">Stuck?</div>
+          <div class="text-xs opacity-70 mt-1">Open an issue on any repo — maintainer responds fast. All GPL-3.0.</div>
+          <a href="https://github.com/bunnywaffle" target="_blank" class="inline-flex mt-3 bg-black text-white text-xs font-bold px-4 py-2 rounded-full">GitHub →</a>
+        </div>
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 border border-white/10 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ + FOOTER -->
+<section class="max-w-[1280px] mx-auto px-6 pb-10">
+  <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-6">
+    <div class="bg-white rounded-[28px] border border-black/10 p-6 md:p-8">
+      <h3 class="font-serif text-[22px]">FAQ</h3>
+      <div class="mt-4 divide-y divide-black/5">
+        <details class="py-4 group" open>
+          <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Do I need to install all 5? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
+          <p class="text-sm text-black/60 mt-2 leading-relaxed">No. Each plugin is standalone. Install only what you need — they don’t depend on each other.</p>
+        </details>
+        <details class="py-4 group">
+          <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Will this work with GIMP 2.10? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
+          <p class="text-sm text-black/60 mt-2 leading-relaxed">No — these target GIMP 3.0/3.2’s new Python API and NDE engine. Upgrade is free.</p>
+        </details>
+        <details class="py-4 group">
+          <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Are they really Photoshop-identical? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
+          <p class="text-sm text-black/60 mt-2 leading-relaxed">Presets, sliders and hotkeys mirror Photoshop/Illustrator. The math (GEGL, PatchMatch, graph-cut) is production-grade.</p>
+        </details>
+        <details class="py-4 group">
+          <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Is my work private? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
+          <p class="text-sm text-black/60 mt-2 leading-relaxed">100% offline. No cloud, no telemetry, no account. Your files never leave your machine.</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="bg-black text-white rounded-[28px] p-6 md:p-8 flex flex-col">
+      <div class="inline-flex bg-white text-black text-[11px] font-mono px-2 py-1 rounded-full font-bold w-fit">OPEN SOURCE</div>
+      <h3 class="font-serif text-[26px] leading-tight mt-3">Free forever.<br>Built for switchers,<br><span class="text-lime italic">by a switcher.</span></h3>
+      <p class="text-sm text-white/60 mt-3 leading-relaxed">All plugins GPL-3.0. Star the repos, file issues, send PRs. If this saves you a subscription, consider sponsoring.</p>
+      <div class="flex flex-wrap gap-2 mt-6">
+        <a href="https://github.com/bunnywaffle" target="_blank" class="bg-white text-black font-bold px-5 py-2.5 rounded-full text-sm">★ Star on GitHub</a>
+        <a href="#plugins" class="bg-lime text-black font-bold px-5 py-2.5 rounded-full text-sm">Browse plugins</a>
+      </div>
+      <div class="mt-auto pt-6 text-[11px] font-mono text-white/30">© 2026 bunnywaffle • GIMP Pro Suite is not affiliated with GIMP or Adobe.</div>
+    </div>
+  </div>
+
+  <footer class="mt-6 text-center text-[12px] font-mono text-black/30">
+    Built for <a href="https://www.gimp.org" target="_blank" class="underline">GIMP</a> 3.2 • Hosted on GitHub Pages • <a href="https://github.com/bunnywaffle" class="underline">github.com/bunnywaffle</a>
+  </footer>
+</section>
+
+</body>
+</html>
