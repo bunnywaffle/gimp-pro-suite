@@ -2,7 +2,8 @@
 
 > **Switch to GIMP without losing Photoshop.** A curated suite, showcase site, and plugin pack for essential GIMP 3.0 & 3.2+ plugins that close the last professional feature gaps.
 
-**Live site:** [bunnywaffle.github.io/gimp-pro-suite](https://bunnywaffle.github.io/gimp-pro-suite/)
+**Live site:** [bunnywaffle.github.io/gimp-pro-suite](https://bunnywaffle.github.io/gimp-pro-suite/)  
+**Direct Download:** [**Download ZIP (No Git Required)**](https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip)
 
 ---
 
@@ -19,32 +20,53 @@
 
 ---
 
-## Quick Install (Plugins Included in Repo)
+## How to Install
 
-This repository includes **Mesh Warp** and **SAM 3 Interactive Select** directly under the `plugins/` directory, along with a 1-click installer:
+> **No Git required!** You do not need Git, command-line skills, or Python packages to install and use these plugins.
 
-### Option 1: One-Click Installer
+### Method 1: 1-Click Installer (Recommended — No Git Needed)
 
-1. Clone or download this repo:
-   ```bash
-   git clone https://github.com/bunnywaffle/gimp-pro-suite.git
-   cd gimp-pro-suite
-   ```
-2. Run the installer for your OS:
-   - **Windows**: Double-click `install.bat`
-   - **Linux / macOS**: Run `./install.sh` (`chmod +x install.sh` first)
-3. Restart GIMP 3.
+1. Click [**Download ZIP**](https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip) (or click the green **Code → Download ZIP** button above).
+2. Right-click the downloaded `.zip` file and select **Extract All...** (or unzip it).
+3. Open the unzipped folder and run the installer:
+   - **Windows**: Double-click **`install.bat`**.
+   - **Linux / macOS**: Open terminal in folder and run **`./install.sh`** (or `bash install.sh`).
+4. Restart GIMP 3. Done!
 
-### Option 2: Manual Install
+Both **Mesh Warp** and **SAM 3 Interactive Select** are now installed in your GIMP user plug-ins directory.
 
-Copy the plugin folders from `plugins/` into your GIMP 3.2 plug-ins directory:
+---
+
+### Method 2: Drag & Drop (Zero Scripts, Zero Git)
+
+If you prefer not running any scripts, you can manually copy the folders from `plugins/` directly into your GIMP user plug-ins folder:
+
+1. Download and extract the [Suite ZIP](https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip).
+2. Copy the two folders inside `plugins/` (`mesh-warp` and `sam3_select`) into your GIMP plug-ins directory:
 
 | OS | Plug-in Destination Folder |
 |---|---|
-| **Windows** | `%APPDATA%\GIMP\3.2\plug-ins\` |
-| **Linux** | `~/.config/GIMP/3.2/plug-ins/` (make executable: `chmod +x *.py`) |
+| **Windows** | `%APPDATA%\GIMP\3.2\plug-ins\` *(e.g. `C:\Users\<YourUser>\AppData\Roaming\GIMP\3.2\plug-ins\`)* |
+| **Linux** | `~/.config/GIMP/3.2/plug-ins/` *(run `chmod +x *.py`)* |
 | **macOS** | `~/Library/Application Support/GIMP/3.2/plug-ins/` |
-| **Flatpak** | `~/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins/` |
+| **Flatpak (Linux)** | `~/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins/` |
+
+3. Restart GIMP 3.
+
+---
+
+### Method 3: Using Git (For Developers)
+
+```bash
+git clone https://github.com/bunnywaffle/gimp-pro-suite.git
+cd gimp-pro-suite
+
+# Windows:
+.\install.bat
+
+# Linux / macOS:
+chmod +x install.sh && ./install.sh
+```
 
 ---
 
@@ -71,8 +93,8 @@ gimp-pro-suite/
   ├── index.html         # Responsive showcase & documentation site (Tailwind CDN)
   ├── README.md          # Project guide & reference
   ├── .nojekyll          # For GitHub Pages hosting
-  ├── install.bat        # 1-click Windows installer
-  ├── install.sh         # 1-click Linux / macOS installer
+  ├── install.bat        # 1-click Windows installer (No Git required)
+  ├── install.sh         # 1-click Linux / macOS installer (No Git required)
   └── plugins/
       ├── mesh-warp/     # Mesh Warp plugin code
       │   ├── mesh-warp.py

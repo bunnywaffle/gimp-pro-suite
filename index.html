@@ -63,9 +63,9 @@ tailwind.config = {
       <a href="#install" class="hover:opacity-60">Install</a>
     </div>
     <div class="flex items-center gap-2">
-      <a href="https://github.com/bunnywaffle" target="_blank" class="hidden sm:inline-flex items-center gap-2 text-[13px] font-medium border border-black/10 rounded-full px-4 py-2 hover:bg-black hover:text-white transition">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-1.98c-3.2.7-3.87-1.34-3.87-1.34-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.04.77 2.09v3.1c0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.13-5.37-11.5-12-11.5z"/></svg>
-        bunnywaffle
+      <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-bold bg-black text-white rounded-full px-4 py-2 hover:bg-zinc-800 transition">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Download ZIP
       </a>
       <a href="#plugins" class="inline-flex bg-lime text-black font-bold text-[13px] px-5 py-2 rounded-full hover:brightness-95 transition">Browse Plugins →</a>
     </div>
@@ -89,12 +89,16 @@ tailwind.config = {
         <p class="text-white/60 text-[15px] leading-relaxed mt-4 max-w-[46ch]">
           The missing pro tools — SAM 3 AI selection, mesh warp, adjustment layers, content-aware fill, quick selection & vector shapes — now native in GIMP 3. Save <b class="text-white">$659/year</b> and keep your muscle memory.
         </p>
-        <div class="flex flex-wrap gap-3 mt-8">
-          <a href="#plugins" class="bg-lime text-black font-bold px-6 py-3 rounded-full text-sm hover:brightness-95 transition">Explore the Library</a>
-          <a href="#switch" class="bg-white text-black font-semibold px-6 py-3 rounded-full text-sm hover:bg-white/90 transition">See comparison</a>
+        <div class="flex flex-wrap items-center gap-3 mt-8">
+          <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="bg-lime text-black font-bold px-6 py-3 rounded-full text-sm hover:brightness-95 transition inline-flex items-center gap-2 shadow-lg shadow-lime/20">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            Download ZIP (No Git Needed)
+          </a>
+          <a href="#install" class="bg-white/10 border border-white/20 text-white font-semibold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-black transition">How to install</a>
+          <a href="#switch" class="text-white/60 hover:text-white text-sm font-medium px-2 py-3 transition">Comparison →</a>
         </div>
-        <div class="flex items-center gap-6 mt-8 text-[12px] font-mono text-white/50">
-          <span>★ GPL-3.0</span><span>•</span><span> GIMP 3.0 / 3.2+</span><span>•</span><span> Win / Linux / macOS</span>
+        <div class="flex items-center gap-5 mt-8 text-[12px] font-mono text-white/50">
+          <span class="text-lime">★ No Git Required</span><span>•</span><span>★ GPL-3.0</span><span>•</span><span> GIMP 3.0 / 3.2+</span><span>•</span><span> Win / Linux / macOS</span>
         </div>
       </div>
       <!-- decorative gradient -->
@@ -121,12 +125,12 @@ tailwind.config = {
         </div>
       </div>
       <div class="bg-white rounded-[32px] border border-black/10 p-6 flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-black text-white grid place-items-center text-lg">⌘</div>
+        <div class="w-12 h-12 rounded-2xl bg-black text-white grid place-items-center text-lg">⚡</div>
         <div>
-          <div class="font-bold text-sm">One installer. Every OS.</div>
-          <div class="text-sm text-black/50">Run install.bat or install.sh → restart GIMP. Ready instantly.</div>
+          <div class="font-bold text-sm">No Git? No problem.</div>
+          <div class="text-sm text-black/50">Download ZIP → double-click install.bat. Done in 10 seconds.</div>
         </div>
-        <a href="#install" class="ml-auto text-sm font-bold underline">Install →</a>
+        <a href="#install" class="ml-auto text-sm font-bold underline">Install guide →</a>
       </div>
     </div>
   </div>
@@ -146,7 +150,7 @@ tailwind.config = {
       <div class="text-[11px] font-mono tracking-widest opacity-50">THE LIBRARY — 6 PLUGINS</div>
       <h2 class="font-serif text-[36px] leading-none mt-1">Everything you missed<br><span class="italic">in GIMP, fixed.</span></h2>
     </div>
-    <p class="max-w-[44ch] text-sm text-black/60 leading-relaxed">Click any card to inspect the source repo. All plugins are ready to use in the <code class="font-mono text-black font-semibold">plugins/</code> directory.</p>
+    <p class="max-w-[44ch] text-sm text-black/60 leading-relaxed">Click any card to inspect the source repo. Mesh Warp and SAM 3 Select are ready to use in the <code class="font-mono text-black font-semibold">plugins/</code> folder.</p>
   </div>
 
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
@@ -311,13 +315,16 @@ tailwind.config = {
   <div class="mt-8 bg-black text-white rounded-[28px] p-8 md:p-10 relative overflow-hidden grid-pattern">
     <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
       <div class="max-w-xl">
-        <div class="inline-flex items-center gap-2 bg-lime text-black text-[11px] font-mono px-3 py-1 rounded-full font-bold">ALL-IN-ONE BUNDLE</div>
+        <div class="inline-flex items-center gap-2 bg-lime text-black text-[11px] font-mono px-3 py-1 rounded-full font-bold">ALL-IN-ONE BUNDLE • NO GIT REQUIRED</div>
         <h3 class="font-serif text-[32px] leading-tight mt-3">Install all 6 plugins in 2 minutes.</h3>
-        <p class="text-white/60 text-sm leading-relaxed mt-2">Clone this suite repo to get Mesh Warp and SAM 3 Select inside the <code class="text-lime font-mono">plugins/</code> folder, with 1-click installers included. Zero external dependencies, pure Python 3.</p>
+        <p class="text-white/60 text-sm leading-relaxed mt-2">Download the ZIP, extract it, and double-click the installer. Both Mesh Warp and SAM 3 Select are included directly in <code class="text-lime font-mono">plugins/</code>. Zero dependencies, pure Python 3.</p>
       </div>
       <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-        <a href="#install" class="bg-lime text-black font-bold px-6 py-3 rounded-full text-sm text-center hover:brightness-95 transition">How to install →</a>
-        <a href="https://github.com/bunnywaffle" target="_blank" class="bg-white/10 border border-white/20 text-white font-semibold px-6 py-3 rounded-full text-sm text-center hover:bg-white hover:text-black transition">All Repos on GitHub</a>
+        <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="bg-lime text-black font-bold px-6 py-3 rounded-full text-sm text-center hover:brightness-95 transition inline-flex items-center justify-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Download Suite (.ZIP)
+        </a>
+        <a href="#install" class="bg-white/10 border border-white/20 text-white font-semibold px-6 py-3 rounded-full text-sm text-center hover:bg-white hover:text-black transition">Install Instructions</a>
       </div>
     </div>
     <div class="absolute -right-20 -bottom-20 w-[300px] h-[300px] bg-lime/10 blur-[80px] rounded-full"></div>
@@ -511,33 +518,41 @@ tailwind.config = {
   <div class="bg-white rounded-[32px] border border-black/10 overflow-hidden">
     <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-0">
       <div class="p-8 md:p-10">
-        <div class="text-[11px] font-mono tracking-widest opacity-50">INSTALLATION • 2 MINUTES</div>
-        <h2 class="font-serif text-[30px] leading-none mt-2">One Click. Restart.<br><span class="italic">Done.</span></h2>
+        <div class="text-[11px] font-mono tracking-widest opacity-50">INSTALLATION • 2 MINUTES • NO GIT REQUIRED</div>
+        <h2 class="font-serif text-[30px] leading-none mt-2">Download ZIP. Click Install.<br><span class="italic">Done.</span></h2>
 
-        <div class="mt-6 space-y-4">
+        <div class="mt-6 space-y-5">
+          <!-- Step 1 -->
           <div class="flex gap-3">
             <span class="w-7 h-7 rounded-full bg-black text-white grid place-items-center text-xs font-bold shrink-0">1</span>
             <div class="flex-1">
-              <div class="font-bold text-sm">Download or Clone this Suite</div>
-              <div class="mt-2 bg-zinc-900 text-zinc-100 rounded-xl p-3 font-mono text-[11px] leading-relaxed">
-                git clone https://github.com/bunnywaffle/gimp-pro-suite.git<br>
-                cd gimp-pro-suite
+              <div class="flex items-center justify-between">
+                <div class="font-bold text-sm">Download Suite ZIP (No Git needed)</div>
+                <span class="text-[10px] font-mono bg-lime text-black px-2 py-0.5 rounded-full font-bold">FASTEST</span>
               </div>
-              <div class="text-[11px] text-black/40 mt-1">Both Mesh Warp & SAM 3 Select are included directly in <code class="font-mono text-black">plugins/</code></div>
+              <div class="mt-2.5 flex flex-wrap gap-2">
+                <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-zinc-800 transition">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  Download Suite ZIP (.zip)
+                </a>
+              </div>
+              <div class="text-[11px] text-black/50 mt-2 leading-relaxed">
+                Extract the downloaded ZIP folder anywhere. (If you prefer Git: <code class="font-mono text-[10px] bg-zinc-100 px-1 py-0.5 rounded">git clone https://github.com/bunnywaffle/gimp-pro-suite.git</code>)
+              </div>
             </div>
           </div>
 
+          <!-- Step 2 -->
           <div class="flex gap-3">
             <span class="w-7 h-7 rounded-full bg-black text-white grid place-items-center text-xs font-bold shrink-0">2</span>
             <div class="flex-1">
-              <div class="font-bold text-sm">Run the 1-Click Installer</div>
-              <div class="mt-2 bg-zinc-50 border border-black/10 rounded-xl p-3 font-mono text-[11px] overflow-x-auto">
-                <span class="text-black/50"># Windows: double-click install.bat or run:</span><br>
-                .\install.bat<br><br>
-                <span class="text-black/50"># Linux / macOS:</span><br>
-                chmod +x install.sh && ./install.sh
+              <div class="font-bold text-sm">Run 1-Click Installer (Double-Click)</div>
+              <div class="mt-2 bg-zinc-50 border border-black/10 rounded-xl p-3.5 text-[12px] leading-relaxed">
+                <div class="font-medium text-black">• <b>Windows</b>: Double-click <code class="font-mono font-bold bg-white px-1.5 py-0.5 rounded border border-black/10">install.bat</code> inside the extracted folder.</div>
+                <div class="font-medium text-black mt-1.5">• <b>Linux / macOS</b>: Run <code class="font-mono font-bold bg-white px-1.5 py-0.5 rounded border border-black/10">./install.sh</code> in terminal (or double-click it).</div>
+                <div class="text-black/50 text-[11px] mt-2"><b>Zero scripts alternative:</b> Just drag the folders inside <code class="font-mono">plugins/</code> (<code class="font-mono">mesh-warp</code> & <code class="font-mono">sam3_select</code>) directly into your GIMP plug-ins folder!</div>
               </div>
-              <div class="flex flex-wrap gap-2 mt-2">
+              <div class="flex flex-wrap gap-2 mt-2.5">
                 <a href="https://github.com/bunnywaffle/gimp-mesh-warp" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">mesh-warp ↗</a>
                 <a href="https://github.com/bunnywaffle/gimp-sam-select" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">sam-select ↗</a>
                 <a href="https://github.com/bunnywaffle/adjustment-layer" target="_blank" class="text-[11px] border border-black/10 rounded-full px-3 py-1 hover:bg-black hover:text-white transition">adjustment-layer ↗</a>
@@ -548,6 +563,7 @@ tailwind.config = {
             </div>
           </div>
 
+          <!-- Step 3 -->
           <div class="flex gap-3">
             <span class="w-7 h-7 rounded-full bg-lime text-black grid place-items-center text-xs font-bold shrink-0">3</span>
             <div>
@@ -569,12 +585,12 @@ tailwind.config = {
         <h3 class="font-bold">Requirements</h3>
         <ul class="mt-3 space-y-2 text-sm text-white/70">
           <li>• GIMP 3.0, 3.2 or newer</li>
-          <li>• Python 3 (bundled with GIMP)</li>
+          <li>• Python 3 (already bundled with GIMP)</li>
           <li>• Zero extra dependencies for Mesh Warp & built-in engines</li>
           <li>• First AI run in SAM 3 downloads tiny model (~156MB) automatically</li>
         </ul>
         <div class="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div class="text-[11px] font-mono opacity-50">MANUAL COPY TARGET</div>
+          <div class="text-[11px] font-mono opacity-50">GIMP PLUG-INS PATH</div>
           <div class="font-mono text-[11px] mt-1 break-all leading-relaxed text-white/80">
             Windows: %APPDATA%\GIMP\3.2\plug-ins\<br>
             Linux: ~/.config/GIMP/3.2/plug-ins/<br>
@@ -599,12 +615,16 @@ tailwind.config = {
       <h3 class="font-serif text-[22px]">FAQ</h3>
       <div class="mt-4 divide-y divide-black/5">
         <details class="py-4 group" open>
+          <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">What if I don't have Git installed? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
+          <p class="text-sm text-black/60 mt-2 leading-relaxed">You don't need Git at all! Simply click <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="underline font-semibold text-black">Download Suite ZIP</a>, right-click to extract it, and double-click <b>install.bat</b> (Windows) or run <b>./install.sh</b> (Linux/Mac). You can also drag the folders inside <code class="font-mono text-xs">plugins/</code> directly into your GIMP plug-ins folder.</p>
+        </details>
+        <details class="py-4 group">
           <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Do I need to install all 6? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
           <p class="text-sm text-black/60 mt-2 leading-relaxed">No. Each plugin is standalone. Install only what you need — they don’t depend on each other.</p>
         </details>
         <details class="py-4 group">
           <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Will this work with GIMP 2.10? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
-          <p class="text-sm text-black/60 mt-2 leading-relaxed">No — these target GIMP 3.0/3.2’s modern Python 3 API and non-destructive engine. Upgrade is free.</p>
+          <p class="text-sm text-black/60 mt-2 leading-relaxed">No — these target GIMP 3.0/3.2’s modern Python 3 API and non-destructive engine. Upgrade to GIMP 3 is completely free.</p>
         </details>
         <details class="py-4 group">
           <summary class="font-semibold text-sm list-none flex justify-between cursor-pointer">Are they really Photoshop-identical? <span class="text-black/30 group-open:rotate-180 transition">⌄</span></summary>
