@@ -1,2 +1,7 @@
 .DS_Store
 Thumbs.db
+__pycache__/
+*.pyc
+.worker_choice.json
+plugins/sam3_select/models/*.pt
+plugins/sam3_select/models/hf/

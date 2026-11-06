@@ -1,71 +1,104 @@
 # GIMP Pro Suite — Library & Switch Kit
 
-> **Switch to GIMP without losing Photoshop.** A curated docs & showcase site for 5 essential GIMP 3.2 plugins that close the last pro feature gaps.
+> **Switch to GIMP without losing Photoshop.** A curated suite, showcase site, and plugin pack for essential GIMP 3.0 & 3.2+ plugins that close the last professional feature gaps.
 
-**Live site:** `https://<your-username>.github.io/gimp-suite/` (enable GitHub Pages on `main` → `/gimp-suite` or root)
-
-This repo **does not host plugin code**. It documents, compares, and links to the upstream plugins.
+**Live site:** [bunnywaffle.github.io/gimp-pro-suite](https://bunnywaffle.github.io/gimp-pro-suite/)
 
 ---
 
-## Included plugins
+## Included Plugins
 
-| Plugin | What it replaces | Repo |
-|---|---|---|
-| **Mesh Warp & Transform Presets** | Photoshop/Illustrator Warp (Arc, Bulge, Flag, etc.) | [bunnywaffle/gimp-mesh-warp](https://github.com/bunnywaffle/gimp-mesh-warp) |
-| **Adjustment Layers & Layer Effects** | Photoshop Adjustment Layers + Layer Styles | [bunnywaffle/adjustment-layer](https://github.com/bunnywaffle/adjustment-layer) |
-| **Vector Shape Tool** | Photoshop Custom Shapes | [bunnywaffle/gimp-shape-tool](https://github.com/bunnywaffle/gimp-shape-tool) |
-| **Quick Selection Brush** | Photoshop Quick Selection / Object Selection | [bunnywaffle/GIMP-Quick-Selection](https://github.com/bunnywaffle/GIMP-Quick-Selection) |
-| **Content-Aware Fill** | Photoshop Content-Aware Fill (PatchMatch) | [bunnywaffle/GIMP-Content-Aware-Fill](https://github.com/bunnywaffle/GIMP-Content-Aware-Fill) |
+| Plugin | What it Replaces | Menu Location | Repo |
+|---|---|---|---|
+| **Mesh Warp & Transform Presets** | Photoshop/Illustrator Warp (Arc, Bulge, Flag, etc.) + Puppet Warp | `Filters → Distorts → Mesh Warp...` | [bunnywaffle/gimp-mesh-warp](https://github.com/bunnywaffle/gimp-mesh-warp) |
+| **SAM 3 AI Interactive Select** | Photoshop Object Selection / Select Subject (Meta SAM 2 & SAM 3) | `Select → SAM3 Interactive Select` | [bunnywaffle/gimp-sam-select](https://github.com/bunnywaffle/gimp-sam-select) |
+| **Adjustment Layers & Layer Effects** | Photoshop Adjustment Layers (19 GEGL) + Layer Styles (6 effects) | `Layer → Adjustment Layer` | [bunnywaffle/adjustment-layer](https://github.com/bunnywaffle/adjustment-layer) |
+| **Vector Shape Tool** | Photoshop Custom Shapes (15 families, 60+ variants) | `Image / Tools → Vector Shape Generator` | [bunnywaffle/gimp-shape-tool](https://github.com/bunnywaffle/gimp-shape-tool) |
+| **Quick Selection Brush** | Photoshop Quick Selection Brush (edge-aware graph-cut) | `Select → Quick Selection Brush` | [bunnywaffle/GIMP-Quick-Selection](https://github.com/bunnywaffle/GIMP-Quick-Selection) |
+| **Content-Aware Fill** | Photoshop Content-Aware Fill (PatchMatch, Telea, multi-scale) | `Edit → Content-Aware Fill...` | [bunnywaffle/GIMP-Content-Aware-Fill](https://github.com/bunnywaffle/GIMP-Content-Aware-Fill) |
 
 ---
 
-## Features of this site
+## Quick Install (Plugins Included in Repo)
 
-- Hero + value proposition for switchers (save $659/yr vs Creative Cloud)
-- Plugin cards with presets, menu paths, and direct GitHub links
-- **Why Switch** comparison table (Photoshop vs GIMP + Suite)
-- **Advanced Tool Library** — Color & Tone Lab (19 adjustments), Warp Lab (15 presets), Select & Heal Lab, Shapes & Effects
-- **Installation** — OS paths + one-liner clone commands + menu locations
-- FAQ, responsive, no build step
+This repository includes **Mesh Warp** and **SAM 3 Interactive Select** directly under the `plugins/` directory, along with a 1-click installer:
 
-## Structure
+### Option 1: One-Click Installer
 
-```
-gimp-suite/
-  index.html   # single-file site (Tailwind CDN, no build)
-  README.md
-  .nojekyll    # for GitHub Pages
-```
-
-## Deploy to GitHub Pages
-
-1. Create a new GitHub repo, e.g. `gimp-pro-suite` or `gimp-suite`
-2. Push this folder as the repo root:
+1. Clone or download this repo:
    ```bash
-   git init
-   git add .
-   git commit -m "feat: GIMP Pro Suite docs site"
-   git branch -M main
-   git remote add origin https://github.com/<you>/gimp-suite.git
-   git push -u origin main
+   git clone https://github.com/bunnywaffle/gimp-pro-suite.git
+   cd gimp-pro-suite
    ```
-3. In repo **Settings → Pages**: Source = `Deploy from a branch`, Branch = `main` / `root`, Save.
-4. Your site will be at `https://<you>.github.io/gimp-suite/`
+2. Run the installer for your OS:
+   - **Windows**: Double-click `install.bat`
+   - **Linux / macOS**: Run `./install.sh` (`chmod +x install.sh` first)
+3. Restart GIMP 3.
 
-Alternatively use `docs/` folder or GitHub Actions — this site is static, either works.
+### Option 2: Manual Install
 
-## Customize
+Copy the plugin folders from `plugins/` into your GIMP 3.2 plug-ins directory:
 
-- Change `bunnywaffle` links to your own org if you fork the plugins
-- Edit `index.html` — all styles are Tailwind CDN, sections are commented
-- Add screenshots: put in `assets/` and reference with `assets/…`
-- To add a 6th plugin: duplicate a card in the `#plugins` grid
+| OS | Plug-in Destination Folder |
+|---|---|
+| **Windows** | `%APPDATA%\GIMP\3.2\plug-ins\` |
+| **Linux** | `~/.config/GIMP/3.2/plug-ins/` (make executable: `chmod +x *.py`) |
+| **macOS** | `~/Library/Application Support/GIMP/3.2/plug-ins/` |
+| **Flatpak** | `~/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins/` |
+
+---
+
+## Featured Plugins Detail
+
+### 1. Mesh Warp & Transform Presets
+- **15 Photoshop/Illustrator Warp Presets**: Arc, Arc Lower/Upper, Arch, Bulge, Shell Lower/Upper, Flag, Wave, Fish, Rise, FishEye, Inflate, Squeeze, Twist, and Custom.
+- **Continuous Seam-Free Remapping**: Subpixel bilinear backward mapping. No antialiasing seams, wireframes, or polygon tears.
+- **Dynamic Control Grid**: $2 \times 2$ to $24 \times 24$ mesh, soft cosine falloff radius, symmetry mirroring, and auto-expanding canvas.
+- Upstream: [bunnywaffle/gimp-mesh-warp](https://github.com/bunnywaffle/gimp-mesh-warp)
+
+### 2. SAM 3 AI Interactive Selection Tool
+- **Meta SAM 2 & SAM 3 Integration**: Interactive object segmentation with live preview overlay.
+- **Multimodal Prompts**: Left-click for foreground, right-click for background, drag bounding boxes, or type plain-text descriptions (`"red car"`).
+- **Persistent High-Speed Worker**: Zero console windows, interpreter auto-discovery, persistent server caching (~0.1s clicks).
+- Upstream: [bunnywaffle/gimp-sam-select](https://github.com/bunnywaffle/gimp-sam-select)
+
+---
+
+## Repository Structure
+
+```
+gimp-pro-suite/
+  ├── index.html         # Responsive showcase & documentation site (Tailwind CDN)
+  ├── README.md          # Project guide & reference
+  ├── .nojekyll          # For GitHub Pages hosting
+  ├── install.bat        # 1-click Windows installer
+  ├── install.sh         # 1-click Linux / macOS installer
+  └── plugins/
+      ├── mesh-warp/     # Mesh Warp plugin code
+      │   ├── mesh-warp.py
+      │   ├── mesh_warp.py
+      │   └── README.md
+      └── sam3_select/   # SAM 3 Interactive Select plugin code
+          ├── sam3_select.py
+          ├── install.bat
+          ├── install.sh
+          └── README.md
+```
+
+---
+
+## GitHub Pages Deployment
+
+The static showcase site is live from the root of the repository:
+1. Go to **Settings → Pages** in your GitHub repository.
+2. Select **Source:** `Deploy from a branch`.
+3. Set **Branch:** `main` and folder `/ (root)`, then click **Save**.
+4. The site will deploy at `https://bunnywaffle.github.io/gimp-pro-suite/`.
+
+---
 
 ## License
 
-Site content: **MIT** (or keep GPL-3.0 to match plugins). Plugin code remains under their own **GPL-3.0** licenses — see each upstream repo.
-
----
-
-Built for GIMP 3.2. Not affiliated with GIMP or Adobe.
+- Site & installation scripts: **MIT**
+- Included plugins: **GNU General Public License v3.0 (GPL-3.0)** — see respective license files in `plugins/`.
+- Not affiliated with GIMP or Adobe.
