@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GIMP Pro Suite — Photoshop Workflows, Native in GIMP 3</title>
-<meta name="description" content="6 essential open-source plugins for GIMP 3.0 and 3.2+: SAM 3 AI selection, Mesh Warp, Adjustment Layers, Vector Shapes, Quick Selection, and Content-Aware Fill.">
+<meta name="description" content="Darkroom-grade open-source plugin suite for GIMP 3.0 and 3.2+: SAM 3 AI selection, Mesh Warp, Adjustment Layers, Vector Shapes, Quick Selection, and Content-Aware Fill.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -18,14 +19,14 @@ tailwind.config = {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        canvas: '#09090B',
+        panel: '#111114',
+        elevated: '#18181B',
         brand: {
           DEFAULT: '#0F766E',
           hover: '#115E59',
-          tint: '#F0FDFA',
-        },
-        ink: '#0F172A',
-        muted: '#475569',
-        surface: '#F8FAFC',
+          bright: '#2DD4BF',
+        }
       }
     }
   }
@@ -34,17 +35,24 @@ tailwind.config = {
 <style>
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
   body {
     font-family: Inter, system-ui, sans-serif;
-    background-color: #F8FAFC;
-    color: #0F172A;
+    background-color: #09090B;
+    color: #F8FAFC;
   }
   h1, h2, h3, .font-display {
     font-family: "Bricolage Grotesque", system-ui, sans-serif;
   }
+  .studio-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
   .transition-ui {
-    transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, color 150ms ease;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -61,26 +69,27 @@ tailwind.config = {
 <body class="antialiased selection:bg-[#0F766E] selection:text-white">
 
 <!-- HEADER -->
-<header class="sticky top-0 z-40 bg-white border-b border-slate-200">
+<header class="sticky top-0 z-40 bg-[#09090B] border-b border-white/10">
   <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
-    <a href="#" class="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md">
-      <span class="w-8 h-8 rounded-md bg-[#0F766E] text-white grid place-items-center font-display text-sm tracking-tight" aria-hidden="true">G3</span>
-      <span class="font-display text-base text-ink tracking-tight">GIMP Pro Suite</span>
+    <a href="#" class="flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+      <span class="w-8 h-8 rounded-md bg-[#0F766E] text-white grid place-items-center font-display text-sm tracking-tight border border-teal-400/20" aria-hidden="true">G3</span>
+      <span class="font-display text-base text-slate-50 tracking-tight">GIMP Pro Suite</span>
+      <span class="hidden sm:inline-flex items-center rounded-full bg-white/5 border border-white/10 px-2 py-0.5 text-[11px] font-mono text-zinc-400">v3.2+</span>
     </a>
 
-    <nav aria-label="Primary" class="hidden md:flex items-center gap-7 text-sm font-medium text-muted">
-      <a href="#plugins" class="hover:text-ink transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md px-1 py-0.5">Plugins</a>
-      <a href="#comparison" class="hover:text-ink transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md px-1 py-0.5">Comparison</a>
-      <a href="#install" class="hover:text-ink transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md px-1 py-0.5">Install</a>
-      <a href="#faq" class="hover:text-ink transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md px-1 py-0.5">FAQ</a>
+    <nav aria-label="Primary" class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400">
+      <a href="#plugins" class="hover:text-white transition-ui rounded-md px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">Plugins</a>
+      <a href="#comparison" class="hover:text-white transition-ui rounded-md px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">Parity</a>
+      <a href="#install" class="hover:text-white transition-ui rounded-md px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">Install</a>
+      <a href="#faq" class="hover:text-white transition-ui rounded-md px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">FAQ</a>
     </nav>
 
-    <div class="flex items-center gap-3">
-      <a href="https://github.com/bunnywaffle/gimp-pro-suite" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-ink px-3 py-1.5 rounded-md border border-slate-200 hover:border-slate-300 bg-white transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E]">
+    <div class="flex items-center gap-2.5">
+      <a href="https://github.com/bunnywaffle/gimp-pro-suite" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-zinc-300 hover:text-white px-3 py-1.5 rounded-md border border-white/10 hover:border-white/25 bg-[#111114] transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.87 0 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-1.98c-3.2.7-3.87-1.34-3.87-1.34-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.04.77 2.09v3.1c0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.13-5.37-11.5-12-11.5z"/></svg>
         GitHub
       </a>
-      <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-1.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium text-sm px-4 py-2 rounded-md transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0F766E]">
+      <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-1.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium text-sm px-4 py-2 rounded-md border border-teal-400/20 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B] focus-visible:ring-[#2DD4BF]">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download ZIP
       </a>
@@ -89,288 +98,413 @@ tailwind.config = {
 </header>
 
 <main>
-  <!-- HERO -->
-  <section class="py-20 md:py-28 border-b border-slate-200 bg-white">
-    <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-12 gap-12 items-start">
-      <!-- Left column -->
-      <div class="lg:col-span-7">
-        <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-200 px-3 py-1 text-xs font-medium text-[#0F766E]">
+  <!-- HERO: DARKROOM STUDIO WORKBENCH -->
+  <section class="relative overflow-hidden border-b border-white/10 studio-grid py-16 md:py-24">
+    <!-- Subtle single studio spotlight -->
+    <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[360px] rounded-full bg-[#0F766E]/15 blur-[120px]" aria-hidden="true"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <!-- Left 6 cols -->
+      <div class="lg:col-span-6">
+        <div class="inline-flex items-center gap-2 rounded-full bg-[#111114] border border-white/10 px-3 py-1 text-xs font-medium text-[#2DD4BF]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#2DD4BF]" aria-hidden="true"></span>
           <span>GIMP 3.0 &amp; 3.2+</span>
-          <span aria-hidden="true">·</span>
-          <span>6 Bundled Plugins</span>
-          <span aria-hidden="true">·</span>
-          <span>GPL-3.0</span>
+          <span class="text-zinc-500" aria-hidden="true">/</span>
+          <span class="text-zinc-300">6 Bundled Plugins</span>
+          <span class="text-zinc-500" aria-hidden="true">/</span>
+          <span class="text-zinc-300">GPL-3.0</span>
         </div>
 
-        <h1 class="font-display text-4xl sm:text-5xl lg:text-[54px] leading-[1.06] tracking-tight text-ink mt-6">
-          Photoshop workflows, native in GIMP 3.
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-[56px] leading-[1.04] tracking-tight text-white mt-6">
+          Photoshop muscle memory, native in GIMP 3.
         </h1>
 
-        <p class="text-base sm:text-lg text-muted leading-relaxed mt-5 max-w-prose">
-          Six standalone Python plugins packaged together: SAM 3 AI selection, Mesh Warp presets, non-destructive Adjustment Layers, Vector Shapes, Quick Selection Brush, and Content-Aware Fill.
+        <p class="text-base sm:text-lg text-zinc-400 leading-relaxed mt-5 max-w-prose">
+          Six production plugins in one pack: SAM 3 AI segmentation, Mesh Warp presets, 32-bit GEGL Adjustment Layers, Vector Shapes, Quick Selection Brush, and PatchMatch Content-Aware Fill.
         </p>
 
         <div class="flex flex-wrap items-center gap-3 mt-8">
-          <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium text-sm px-5 py-3 rounded-md transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0F766E]">
+          <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium text-sm px-5 py-3 rounded-md border border-teal-400/25 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B] focus-visible:ring-[#2DD4BF]">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download All 6 Plugins (.ZIP)
           </a>
-          <a href="#install" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-ink font-medium text-sm px-5 py-3 rounded-md border border-slate-300 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E]">
+          <a href="#install" class="inline-flex items-center gap-2 bg-[#111114] hover:bg-[#18181B] text-zinc-200 font-medium text-sm px-5 py-3 rounded-md border border-white/15 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
             Install Guide
           </a>
         </div>
 
-        <p class="text-xs text-muted mt-5">
-          No Git required. Runs on Windows, Linux (native &amp; Flatpak), and macOS.
-        </p>
+        <dl class="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-white/10 text-xs">
+          <div>
+            <dt class="text-zinc-400">Install</dt>
+            <dd class="text-white font-medium mt-1">No Git required</dd>
+          </div>
+          <div>
+            <dt class="text-zinc-400">Platforms</dt>
+            <dd class="text-white font-medium mt-1">Win · Linux · macOS</dd>
+          </div>
+          <div>
+            <dt class="text-zinc-400">Execution</dt>
+            <dd class="text-white font-medium mt-1">100% Local</dd>
+          </div>
+        </dl>
       </div>
 
-      <!-- Right column: Suite Manifest -->
-      <div class="lg:col-span-5">
-        <div class="rounded-lg border border-slate-200 bg-surface p-6">
-          <div class="flex items-center justify-between pb-4 border-b border-slate-200">
-            <span class="text-xs font-medium uppercase tracking-wider text-muted">Included in plugins/</span>
-            <span class="text-xs font-mono text-[#0F766E] font-medium">6 directories</span>
+      <!-- Right 6 cols: Interactive Darkroom Workbench -->
+      <div class="lg:col-span-6">
+        <div class="rounded-xl border border-white/10 bg-[#111114] shadow-2xl overflow-hidden">
+          <!-- Window Chrome -->
+          <div class="flex items-center justify-between px-4 py-3 bg-[#18181B] border-b border-white/10">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-zinc-700" aria-hidden="true"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-zinc-700" aria-hidden="true"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-zinc-700" aria-hidden="true"></span>
+              <span class="ml-2 text-xs font-mono text-zinc-400">gimp-3.2 — workbench</span>
+            </div>
+            <div role="tablist" aria-label="Interactive plugin preview" class="flex items-center gap-1 bg-[#09090B] p-1 rounded-md border border-white/10">
+              <button type="button" role="tab" aria-selected="true" aria-controls="wb-sam" id="tab-wb-sam" class="wb-tab cursor-pointer px-2.5 py-1 text-[11px] font-medium rounded-sm bg-[#0F766E] text-white transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                SAM 3
+              </button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="wb-warp" id="tab-wb-warp" class="wb-tab cursor-pointer px-2.5 py-1 text-[11px] font-medium rounded-sm text-zinc-400 hover:text-white transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                Mesh Warp
+              </button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="wb-nde" id="tab-wb-nde" class="wb-tab cursor-pointer px-2.5 py-1 text-[11px] font-medium rounded-sm text-zinc-400 hover:text-white transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                NDE Layers
+              </button>
+            </div>
           </div>
 
-          <ul class="divide-y divide-slate-200 text-sm">
-            <li class="py-3 flex items-center justify-between gap-3">
-              <span class="font-medium text-ink">sam3_select</span>
-              <span class="text-xs font-mono text-muted">Select → SAM3 Interactive</span>
-            </li>
-            <li class="py-3 flex items-center justify-between gap-3">
-              <span class="font-medium text-ink">mesh-warp</span>
-              <span class="text-xs font-mono text-muted">Filters → Distorts → Mesh Warp</span>
-            </li>
-            <li class="py-3 flex items-center justify-between gap-3">
-              <span class="font-medium text-ink">adjustment-layer</span>
-              <span class="text-xs font-mono text-muted">Layer → Adjustment Layer</span>
-            </li>
-            <li class="py-3 flex items-center justify-between gap-3">
-              <span class="font-medium text-ink">gimp-shape-tool</span>
-              <span class="text-xs font-mono text-muted">Image → Vector Shape Generator</span>
-            </li>
-            <li class="py-3 flex items-center justify-between gap-3">
-              <span class="font-medium text-ink">GIMP-Quick-Selection</span>
-              <span class="text-xs font-mono text-muted">Select → Quick Selection Brush</span>
-            </li>
-            <li class="py-3 flex items-center justify-between gap-3">
-              <span class="font-medium text-ink">content-aware-fill</span>
-              <span class="text-xs font-mono text-muted">Edit → Content-Aware Fill</span>
-            </li>
-          </ul>
+          <!-- Workbench Panel 1: SAM 3 -->
+          <div id="wb-sam" role="tabpanel" aria-labelledby="tab-wb-sam" class="p-5">
+            <div class="rounded-lg border border-white/10 bg-[#09090B] p-4 relative">
+              <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400 mb-3">
+                <span>Prompt: <span class="text-[#2DD4BF]">"red car"</span> + 2 points</span>
+                <span class="text-zinc-300">Engine: SAM 3 / SAM 2</span>
+              </div>
+              <svg viewBox="0 0 360 150" class="w-full h-36 rounded-md bg-[#111114] border border-white/5" aria-label="SAM 3 interactive mask preview diagram">
+                <defs>
+                  <pattern id="checker" width="16" height="16" patternUnits="userSpaceOnUse">
+                    <rect width="8" height="8" fill="#18181B"/>
+                    <rect x="8" y="8" width="8" height="8" fill="#18181B"/>
+                    <rect x="8" width="8" height="8" fill="#141417"/>
+                    <rect y="8" width="8" height="8" fill="#141417"/>
+                  </pattern>
+                </defs>
+                <rect width="360" height="150" fill="url(#checker)"/>
+                <!-- Selection Bounding Box -->
+                <rect x="68" y="34" width="224" height="82" rx="4" fill="none" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="4 3"/>
+                <!-- Segmented Subject Silhouette with green mask overlay -->
+                <path d="M90 96 L104 62 C112 46 138 44 180 44 C222 44 244 48 256 64 L274 74 C282 78 282 96 272 98 L90 98 Z" fill="#0F766E" fill-opacity="0.45" stroke="#2DD4BF" stroke-width="1.75"/>
+                <circle cx="132" cy="100" r="14" fill="#09090B" stroke="#2DD4BF" stroke-width="1.5"/>
+                <circle cx="232" cy="100" r="14" fill="#09090B" stroke="#2DD4BF" stroke-width="1.5"/>
+                <!-- Foreground / Background pins -->
+                <circle cx="178" cy="68" r="5" fill="#2DD4BF" stroke="#09090B" stroke-width="1.5"/>
+                <circle cx="216" cy="76" r="5" fill="#2DD4BF" stroke="#09090B" stroke-width="1.5"/>
+                <circle cx="44" cy="48" r="5" fill="#EF4444" stroke="#09090B" stroke-width="1.5"/>
+              </svg>
+              <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#2DD4BF]" aria-hidden="true"></span> Object (Left-click)</span>
+                  <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500" aria-hidden="true"></span> Background (Right-click)</span>
+                </div>
+                <span class="font-mono text-[11px] text-zinc-300">Output: Selection / Channel / Layer</span>
+              </div>
+            </div>
+          </div>
 
-          <div class="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-muted">
-            <span>One-click installers included:</span>
-            <span class="font-mono text-ink">install.bat · install.sh</span>
+          <!-- Workbench Panel 2: Mesh Warp -->
+          <div id="wb-warp" role="tabpanel" aria-labelledby="tab-wb-warp" class="p-5 hidden">
+            <div class="rounded-lg border border-white/10 bg-[#09090B] p-4">
+              <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400 mb-3">
+                <span>Preset: <span id="warp-label" class="text-[#2DD4BF]">Arc (+45%)</span></span>
+                <span>Grid: 4×4 Bilinear</span>
+              </div>
+              <svg viewBox="0 0 360 150" class="w-full h-36 rounded-md bg-[#111114] border border-white/5" aria-label="Mesh Warp grid preview diagram">
+                <path id="warp-mesh" d="M60 46 Q180 18 300 46 M60 76 Q180 48 300 76 M60 106 Q180 78 300 106 M60 46 L60 106 M140 34 L140 94 M220 34 L220 94 M300 46 L300 106" fill="none" stroke="#2DD4BF" stroke-width="1.5"/>
+                <g fill="#F8FAFC" stroke="#0F766E" stroke-width="1.5">
+                  <circle cx="60" cy="46" r="3.5"/><circle cx="140" cy="34" r="3.5"/><circle cx="220" cy="34" r="3.5"/><circle cx="300" cy="46" r="3.5"/>
+                  <circle cx="60" cy="76" r="3.5"/><circle cx="140" cy="64" r="3.5"/><circle cx="220" cy="64" r="3.5"/><circle cx="300" cy="76" r="3.5"/>
+                  <circle cx="60" cy="106" r="3.5"/><circle cx="140" cy="94" r="3.5"/><circle cx="220" cy="94" r="3.5"/><circle cx="300" cy="106" r="3.5"/>
+                </g>
+              </svg>
+              <div class="mt-3 flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
+                <span class="px-2 py-0.5 rounded-sm bg-[#0F766E] text-white">Arc</span>
+                <span class="px-2 py-0.5 rounded-sm bg-white/5 text-zinc-300">Bulge</span>
+                <span class="px-2 py-0.5 rounded-sm bg-white/5 text-zinc-300">Flag</span>
+                <span class="px-2 py-0.5 rounded-sm bg-white/5 text-zinc-300">Wave</span>
+                <span class="px-2 py-0.5 rounded-sm bg-white/5 text-zinc-300">Twist</span>
+                <span class="px-2 py-0.5 rounded-sm bg-white/5 text-zinc-400">+10 presets</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workbench Panel 3: NDE Layers -->
+          <div id="wb-nde" role="tabpanel" aria-labelledby="tab-wb-nde" class="p-5 hidden">
+            <div class="rounded-lg border border-white/10 bg-[#09090B] p-4 space-y-2.5">
+              <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400 mb-1">
+                <span>Layers Dock (32-bit GEGL NDE)</span>
+                <span class="text-[#2DD4BF]">Non-destructive</span>
+              </div>
+              <div class="flex items-center justify-between rounded-md bg-[#18181B] border border-[#0F766E]/60 px-3 py-2 text-xs">
+                <span class="font-medium text-white">Vibrance &amp; Color Temp</span>
+                <span class="font-mono text-[11px] text-[#2DD4BF]">gegl:vibrance</span>
+              </div>
+              <div class="flex items-center justify-between rounded-md bg-[#18181B] border border-white/10 px-3 py-2 text-xs">
+                <span class="font-medium text-zinc-200">Curves (Masked Selection)</span>
+                <span class="font-mono text-[11px] text-zinc-400">gegl:contrast-curve</span>
+              </div>
+              <div class="flex items-center justify-between rounded-md bg-[#18181B] border border-white/10 px-3 py-2 text-xs">
+                <span class="font-medium text-zinc-200">Drop Shadow + Stroke</span>
+                <span class="font-mono text-[11px] text-zinc-400">gegl:styles</span>
+              </div>
+              <div class="flex items-center justify-between rounded-md bg-[#111114] border border-white/5 px-3 py-2 text-xs text-zinc-400">
+                <span>Base Image Layer</span>
+                <span class="font-mono text-[11px]">Untouched</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PLUGINS -->
-  <section id="plugins" class="py-16">
+  <!-- PLUGINS BENTO -->
+  <section id="plugins" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="max-w-2xl">
-        <p class="text-xs font-medium uppercase tracking-wider text-[#0F766E]">The Suite</p>
-        <h2 class="font-display text-3xl sm:text-4xl text-ink mt-2">Six tools, zero gaps.</h2>
-        <p class="text-muted mt-3 max-w-prose">
-          Every plugin is bundled directly inside this repository and maintained in its own upstream repo. Install the full suite or pick only what you need.
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="max-w-2xl">
+          <p class="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">Included in plugins/</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-white mt-2">Six tools. Built for daily work.</h2>
+        </div>
+        <p class="text-sm text-zinc-400 max-w-sm">
+          All six plugins are bundled directly in this repository—ready to install together or individually.
         </p>
       </div>
 
-      <!-- Featured 2-column flagship tools -->
-      <div class="grid lg:grid-cols-2 gap-6 mt-10">
-        <!-- SAM 3 -->
-        <article class="rounded-lg border border-slate-200 bg-white p-6 sm:p-7 flex flex-col justify-between hover:border-slate-300 hover:shadow-sm transition-ui">
+      <!-- Asymmetric 12-column Bento Grid -->
+      <div class="grid lg:grid-cols-12 gap-5 mt-10">
+
+        <!-- 1. SAM 3 (7 cols) -->
+        <article class="lg:col-span-7 rounded-lg border border-white/10 bg-[#111114] p-6 sm:p-7 flex flex-col justify-between hover:border-white/25 transition-ui">
           <div>
-            <div class="flex items-center justify-between gap-3">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-teal-50 border border-teal-200 px-2.5 py-0.5 text-xs font-medium text-[#0F766E]">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="inline-flex items-center rounded-full bg-[#0F766E]/20 border border-[#2DD4BF]/30 px-2.5 py-0.5 text-xs font-medium text-[#2DD4BF]">
                 AI Object Selection
               </span>
-              <span class="text-xs font-mono text-muted">Select → SAM3 Interactive Select</span>
+              <span class="text-xs font-mono text-zinc-400">Select → SAM3 Interactive Select</span>
             </div>
-            <h3 class="font-display text-2xl text-ink mt-4">SAM 3 Interactive Select</h3>
-            <p class="text-sm text-muted leading-relaxed mt-2 max-w-prose">
-              Click objects, drag bounding boxes, or type plain-text prompts (such as "red car") to segment subjects with a live green mask overlay and marching ants. Uses a persistent background worker for fast repeat clicks.
+
+            <h3 class="font-display text-2xl text-white mt-4">SAM 3 Interactive Select</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed mt-2 max-w-prose">
+              Click objects, drag bounding boxes, or type natural-language prompts (<code class="font-mono text-zinc-200">"red car"</code>) to segment subjects with a live preview mask. Runs a persistent background Python worker so repeat clicks take fractions of a second.
             </p>
-            <div class="flex flex-wrap gap-2 mt-4">
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">SAM 3</span>
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">SAM 2 Tiny (156 MB)</span>
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">GrabCut</span>
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">NumPy fallback</span>
+
+            <div class="mt-5 rounded-md border border-white/10 bg-[#09090B] p-3.5 grid sm:grid-cols-4 gap-2 text-xs">
+              <div class="rounded-sm bg-[#18181B] px-2.5 py-2 border border-white/5">
+                <div class="font-medium text-white">SAM 3</div>
+                <div class="text-zinc-400 text-[11px] mt-0.5">Text &amp; boxes</div>
+              </div>
+              <div class="rounded-sm bg-[#18181B] px-2.5 py-2 border border-white/5">
+                <div class="font-medium text-white">SAM 2 Tiny</div>
+                <div class="text-zinc-400 text-[11px] mt-0.5">156 MB auto</div>
+              </div>
+              <div class="rounded-sm bg-[#18181B] px-2.5 py-2 border border-white/5">
+                <div class="font-medium text-white">GrabCut</div>
+                <div class="text-zinc-400 text-[11px] mt-0.5">0 MB OpenCV</div>
+              </div>
+              <div class="rounded-sm bg-[#18181B] px-2.5 py-2 border border-white/5">
+                <div class="font-medium text-white">NumPy</div>
+                <div class="text-zinc-400 text-[11px] mt-0.5">Offline fallback</div>
+              </div>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs text-muted">Dual-mode Python worker</span>
-            <a href="https://github.com/bunnywaffle/gimp-sam-select" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm font-medium text-[#0F766E] hover:text-[#115E59] transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md px-1">
+
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
+            <span class="font-mono text-zinc-400">plugins/sam3_select/</span>
+            <a href="https://github.com/bunnywaffle/gimp-sam-select" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm font-medium text-[#2DD4BF] hover:text-white transition-ui rounded-md px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
               Source repo
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
             </a>
           </div>
         </article>
 
-        <!-- Mesh Warp -->
-        <article class="rounded-lg border border-slate-200 bg-white p-6 sm:p-7 flex flex-col justify-between hover:border-slate-300 hover:shadow-sm transition-ui">
+        <!-- 2. Mesh Warp (5 cols) -->
+        <article class="lg:col-span-5 rounded-lg border border-white/10 bg-[#111114] p-6 sm:p-7 flex flex-col justify-between hover:border-white/25 transition-ui">
           <div>
-            <div class="flex items-center justify-between gap-3">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-xs font-medium text-ink">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="inline-flex items-center rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs font-medium text-zinc-200">
                 Warp &amp; Transform
               </span>
-              <span class="text-xs font-mono text-muted">Filters → Distorts → Mesh Warp</span>
+              <span class="text-xs font-mono text-zinc-400">Filters → Distorts</span>
             </div>
-            <h3 class="font-display text-2xl text-ink mt-4">Mesh Warp &amp; Transform Presets</h3>
-            <p class="text-sm text-muted leading-relaxed mt-2 max-w-prose">
-              15 classic Photoshop and Illustrator warp presets paired with free-form interactive grid dragging. Uses continuous backward pixel remapping with bilinear interpolation for crisp, seam-free results and auto-expanding layers.
+
+            <h3 class="font-display text-2xl text-white mt-4">Mesh Warp &amp; Presets</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed mt-2">
+              15 Photoshop/Illustrator warp presets plus free-form grid dragging with continuous backward pixel remapping, proportional falloff, symmetry, and auto-expanding layers.
             </p>
-            <div class="flex flex-wrap gap-2 mt-4">
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">15 Presets (Arc, Bulge, Flag…)</span>
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">2×2 to 24×24 Grid</span>
-              <span class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-mono text-ink">Symmetry &amp; Smoothing</span>
+
+            <div class="mt-5 flex flex-wrap gap-1.5 text-[11px] font-mono">
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">Arc</span>
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">Bulge</span>
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">Flag</span>
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">Wave</span>
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">FishEye</span>
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">Squeeze</span>
+              <span class="px-2 py-1 rounded-sm bg-[#18181B] border border-white/10 text-zinc-200">Twist</span>
+              <span class="px-2 py-1 rounded-sm bg-white/5 text-zinc-400">+8 more</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs text-muted">Zero external dependencies</span>
-            <a href="https://github.com/bunnywaffle/gimp-mesh-warp" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm font-medium text-[#0F766E] hover:text-[#115E59] transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md px-1">
+
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
+            <span class="font-mono text-zinc-400">plugins/mesh-warp/</span>
+            <a href="https://github.com/bunnywaffle/gimp-mesh-warp" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm font-medium text-[#2DD4BF] hover:text-white transition-ui rounded-md px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
               Source repo
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
             </a>
           </div>
         </article>
-      </div>
 
-      <!-- Remaining 4 tools in a 2x2 structured grid -->
-      <div class="grid md:grid-cols-2 gap-4 mt-6">
-        <!-- Adjustment Layers -->
-        <article class="rounded-lg border border-slate-200 bg-white p-5 hover:border-slate-300 transition-ui flex flex-col justify-between">
+        <!-- 3. Adjustment Layers (6 cols) -->
+        <article class="lg:col-span-6 rounded-lg border border-white/10 bg-[#111114] p-6 flex flex-col justify-between hover:border-white/25 transition-ui">
           <div>
             <div class="flex items-center justify-between gap-2">
-              <h3 class="font-display text-lg text-ink">Adjustment Layers &amp; Layer Effects</h3>
-              <a href="https://github.com/bunnywaffle/adjustment-layer" target="_blank" rel="noopener noreferrer" aria-label="Adjustment Layers source repository on GitHub" class="text-muted hover:text-[#0F766E] p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E]">
+              <h3 class="font-display text-xl text-white">Adjustment Layers &amp; Layer Effects</h3>
+              <a href="https://github.com/bunnywaffle/adjustment-layer" target="_blank" rel="noopener noreferrer" aria-label="Adjustment Layers source repository on GitHub" class="text-zinc-400 hover:text-[#2DD4BF] p-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </a>
             </div>
-            <p class="text-sm text-muted mt-1.5 leading-relaxed">
-              19 live 32-bit GEGL adjustment layers (Curves, Levels, Exposure, Vibrance, Color Temperature) plus 6 non-destructive layer styles (Stroke, Drop Shadow, Bevel, Inner Glow).
+            <p class="text-sm text-zinc-400 mt-2 leading-relaxed">
+              19 live 32-bit GEGL adjustment layers (Curves, Levels, Exposure, Vibrance, Color Temperature, High Pass) plus 6 non-destructive layer styles (Stroke, Drop Shadow, Long Shadow, Bevel, Inner Glow).
             </p>
           </div>
-          <div class="mt-4 text-xs font-mono text-muted">Layer → Adjustment Layer / Layer Effects</div>
+          <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>Layer → Adjustment Layer</span>
+            <span>plugins/adjustment-layer/</span>
+          </div>
         </article>
 
-        <!-- Vector Shape Tool -->
-        <article class="rounded-lg border border-slate-200 bg-white p-5 hover:border-slate-300 transition-ui flex flex-col justify-between">
+        <!-- 4. Vector Shape Tool (6 cols) -->
+        <article class="lg:col-span-6 rounded-lg border border-white/10 bg-[#111114] p-6 flex flex-col justify-between hover:border-white/25 transition-ui">
           <div>
             <div class="flex items-center justify-between gap-2">
-              <h3 class="font-display text-lg text-ink">Vector Shape Tool</h3>
-              <a href="https://github.com/bunnywaffle/gimp-shape-tool" target="_blank" rel="noopener noreferrer" aria-label="Vector Shape Tool source repository on GitHub" class="text-muted hover:text-[#0F766E] p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E]">
+              <h3 class="font-display text-xl text-white">Vector Shape Tool</h3>
+              <a href="https://github.com/bunnywaffle/gimp-shape-tool" target="_blank" rel="noopener noreferrer" aria-label="Vector Shape Tool source repository on GitHub" class="text-zinc-400 hover:text-[#2DD4BF] p-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </a>
             </div>
-            <p class="text-sm text-muted mt-1.5 leading-relaxed">
-              15 shape families and 60+ parametric variants including rounded rectangles, stars, arrows, speech bubbles, gears, and selection-to-shape tracing. Outputs to Vector Layers, Paths, Raster, or Selections.
+            <p class="text-sm text-zinc-400 mt-2 leading-relaxed">
+              15 shape families and 60+ parametric variants including rounded rectangles, stars, arrows, speech bubbles, gears, and exact selection-to-shape tracing. Outputs to Vector Layers, Paths, Raster, or Selections.
             </p>
           </div>
-          <div class="mt-4 text-xs font-mono text-muted">Image → Vector Shape Generator</div>
+          <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>Image → Vector Shape Generator</span>
+            <span>plugins/gimp-shape-tool/</span>
+          </div>
         </article>
 
-        <!-- Quick Selection -->
-        <article class="rounded-lg border border-slate-200 bg-white p-5 hover:border-slate-300 transition-ui flex flex-col justify-between">
+        <!-- 5. Quick Selection (5 cols) -->
+        <article class="lg:col-span-5 rounded-lg border border-white/10 bg-[#111114] p-6 flex flex-col justify-between hover:border-white/25 transition-ui">
           <div>
             <div class="flex items-center justify-between gap-2">
-              <h3 class="font-display text-lg text-ink">Quick Selection Brush Suite</h3>
-              <a href="https://github.com/bunnywaffle/GIMP-Quick-Selection" target="_blank" rel="noopener noreferrer" aria-label="Quick Selection Brush source repository on GitHub" class="text-muted hover:text-[#0F766E] p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E]">
+              <h3 class="font-display text-xl text-white">Quick Selection Brush</h3>
+              <a href="https://github.com/bunnywaffle/GIMP-Quick-Selection" target="_blank" rel="noopener noreferrer" aria-label="Quick Selection Brush source repository on GitHub" class="text-zinc-400 hover:text-[#2DD4BF] p-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </a>
             </div>
-            <p class="text-sm text-muted mt-1.5 leading-relaxed">
-              Edge-aware selection brush combining CIELAB gradient mapping, SLIC superpixels, Dinic max-flow/min-cut, and subpixel boundary snapping across 4 selectable engines.
+            <p class="text-sm text-zinc-400 mt-2 leading-relaxed">
+              5-stage edge-aware brush combining CIELAB gradient mapping, SLIC superpixels, Dinic max-flow/min-cut, and subpixel snapping across 4 engines.
             </p>
           </div>
-          <div class="mt-4 text-xs font-mono text-muted">Select → Quick Selection Brush</div>
+          <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>Select → Quick Selection Brush</span>
+            <span>plugins/GIMP-Quick-Selection/</span>
+          </div>
         </article>
 
-        <!-- Content-Aware Fill -->
-        <article class="rounded-lg border border-slate-200 bg-white p-5 hover:border-slate-300 transition-ui flex flex-col justify-between">
+        <!-- 6. Content-Aware Fill (7 cols) -->
+        <article class="lg:col-span-7 rounded-lg border border-white/10 bg-[#111114] p-6 flex flex-col justify-between hover:border-white/25 transition-ui">
           <div>
             <div class="flex items-center justify-between gap-2">
-              <h3 class="font-display text-lg text-ink">Content-Aware Fill</h3>
-              <a href="https://github.com/bunnywaffle/GIMP-Content-Aware-Fill" target="_blank" rel="noopener noreferrer" aria-label="Content-Aware Fill source repository on GitHub" class="text-muted hover:text-[#0F766E] p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E]">
+              <h3 class="font-display text-xl text-white">Content-Aware Fill</h3>
+              <a href="https://github.com/bunnywaffle/GIMP-Content-Aware-Fill" target="_blank" rel="noopener noreferrer" aria-label="Content-Aware Fill source repository on GitHub" class="text-zinc-400 hover:text-[#2DD4BF] p-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </a>
             </div>
-            <p class="text-sm text-muted mt-1.5 leading-relaxed">
-              Pure-Python object removal with PatchMatch texture synthesis, Telea fast marching, Multi-Scale, Criminisi exemplar inpainting, and seamless Poisson harmonic blending.
+            <p class="text-sm text-zinc-400 mt-2 leading-relaxed max-w-prose">
+              Pure-Python object removal with PatchMatch texture synthesis, Telea fast marching, Multi-Scale, Criminisi exemplar inpainting, and Poisson harmonic blending for seamless edges.
             </p>
           </div>
-          <div class="mt-4 text-xs font-mono text-muted">Edit → Content-Aware Fill</div>
+          <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>Edit → Content-Aware Fill</span>
+            <span>plugins/content-aware-fill/</span>
+          </div>
         </article>
+
       </div>
     </div>
   </section>
 
-  <!-- COMPARISON TABLE -->
-  <section id="comparison" class="py-16 border-t border-slate-200 bg-white">
+  <!-- FULL-BLEED COMPARISON BAND -->
+  <section id="comparison" class="py-16 bg-[#111114] border-y border-white/10">
     <div class="max-w-5xl mx-auto px-6">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <p class="text-xs font-medium uppercase tracking-wider text-[#0F766E]">Feature Parity</p>
-          <h2 class="font-display text-3xl text-ink mt-2">Photoshop tools vs. GIMP 3 + Pro Suite</h2>
+          <p class="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">Workflow Parity</p>
+          <h2 class="font-display text-3xl text-white mt-2">Photoshop tools vs. GIMP 3 + Pro Suite</h2>
         </div>
-        <p class="text-sm text-muted max-w-sm">
+        <p class="text-sm text-zinc-400 max-w-sm">
           Closes the remaining daily workflow gaps while keeping all editing local on your machine.
         </p>
       </div>
 
-      <div class="mt-8 overflow-x-auto rounded-lg border border-slate-200">
+      <div class="mt-8 overflow-x-auto rounded-lg border border-white/10 bg-[#09090B]">
         <table class="w-full text-left border-collapse text-sm">
           <thead>
-            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-medium uppercase tracking-wider text-muted">
+            <tr class="bg-[#18181B] border-b border-white/10 text-xs font-medium uppercase tracking-wider text-zinc-400">
               <th class="py-3.5 px-4">Capability</th>
               <th class="py-3.5 px-4">Photoshop</th>
-              <th class="py-3.5 px-4 text-[#0F766E]">GIMP 3 + Pro Suite</th>
+              <th class="py-3.5 px-4 text-[#2DD4BF]">GIMP 3 + Pro Suite</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200 bg-white">
+          <tbody class="divide-y divide-white/10">
             <tr>
-              <td class="py-3.5 px-4 font-medium text-ink">AI Object Selection</td>
-              <td class="py-3.5 px-4 text-muted">Object Selection / Select Subject</td>
-              <td class="py-3.5 px-4 text-ink font-medium">SAM 3 &amp; SAM 2 (Point, Box, Text Prompt)</td>
+              <td class="py-3.5 px-4 font-medium text-white">AI Object Selection</td>
+              <td class="py-3.5 px-4 text-zinc-400">Object Selection / Select Subject</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">SAM 3 &amp; SAM 2 (Point, Box, Text Prompt)</td>
             </tr>
-            <tr class="bg-surface">
-              <td class="py-3.5 px-4 font-medium text-ink">Warp &amp; Transform</td>
-              <td class="py-3.5 px-4 text-muted">Warp Presets &amp; Mesh</td>
-              <td class="py-3.5 px-4 text-ink font-medium">Mesh Warp (15 presets, 2×2 to 24×24 grid)</td>
-            </tr>
-            <tr>
-              <td class="py-3.5 px-4 font-medium text-ink">Adjustment Layers</td>
-              <td class="py-3.5 px-4 text-muted">Non-destructive layers</td>
-              <td class="py-3.5 px-4 text-ink font-medium">19 live GEGL 32-bit adjustment layers</td>
-            </tr>
-            <tr class="bg-surface">
-              <td class="py-3.5 px-4 font-medium text-ink">Layer Styles</td>
-              <td class="py-3.5 px-4 text-muted">Stroke, Shadow, Bevel, Glow</td>
-              <td class="py-3.5 px-4 text-ink font-medium">6 live GEGL Layer Effects</td>
+            <tr class="bg-[#111114]/60">
+              <td class="py-3.5 px-4 font-medium text-white">Warp &amp; Transform</td>
+              <td class="py-3.5 px-4 text-zinc-400">Warp Presets &amp; Mesh</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">Mesh Warp (15 presets, 2×2 to 24×24 grid)</td>
             </tr>
             <tr>
-              <td class="py-3.5 px-4 font-medium text-ink">Custom Shapes</td>
-              <td class="py-3.5 px-4 text-muted">Vector Shape Tool</td>
-              <td class="py-3.5 px-4 text-ink font-medium">15 families, 60+ shapes + Selection trace</td>
+              <td class="py-3.5 px-4 font-medium text-white">Adjustment Layers</td>
+              <td class="py-3.5 px-4 text-zinc-400">Non-destructive layers</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">19 live GEGL 32-bit adjustment layers</td>
             </tr>
-            <tr class="bg-surface">
-              <td class="py-3.5 px-4 font-medium text-ink">Quick Selection</td>
-              <td class="py-3.5 px-4 text-muted">Quick Selection Brush</td>
-              <td class="py-3.5 px-4 text-ink font-medium">5-stage edge-aware graph-cut brush</td>
+            <tr class="bg-[#111114]/60">
+              <td class="py-3.5 px-4 font-medium text-white">Layer Styles</td>
+              <td class="py-3.5 px-4 text-zinc-400">Stroke, Shadow, Bevel, Glow</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">6 live GEGL Layer Effects</td>
             </tr>
             <tr>
-              <td class="py-3.5 px-4 font-medium text-ink">Inpainting</td>
-              <td class="py-3.5 px-4 text-muted">Content-Aware Fill</td>
-              <td class="py-3.5 px-4 text-ink font-medium">PatchMatch + Poisson seamless blending</td>
+              <td class="py-3.5 px-4 font-medium text-white">Custom Shapes</td>
+              <td class="py-3.5 px-4 text-zinc-400">Vector Shape Tool</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">15 families, 60+ shapes + Selection trace</td>
             </tr>
-            <tr class="bg-surface">
-              <td class="py-3.5 px-4 font-medium text-ink">Licensing &amp; Offline Use</td>
-              <td class="py-3.5 px-4 text-muted">Subscription</td>
-              <td class="py-3.5 px-4 text-[#0F766E] font-medium">GPL-3.0, 100% local &amp; free</td>
+            <tr class="bg-[#111114]/60">
+              <td class="py-3.5 px-4 font-medium text-white">Quick Selection</td>
+              <td class="py-3.5 px-4 text-zinc-400">Quick Selection Brush</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">5-stage edge-aware graph-cut brush</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 font-medium text-white">Inpainting</td>
+              <td class="py-3.5 px-4 text-zinc-400">Content-Aware Fill</td>
+              <td class="py-3.5 px-4 text-zinc-100 font-medium">PatchMatch + Poisson seamless blending</td>
+            </tr>
+            <tr class="bg-[#111114]/60">
+              <td class="py-3.5 px-4 font-medium text-white">Licensing &amp; Offline Use</td>
+              <td class="py-3.5 px-4 text-zinc-400">Subscription</td>
+              <td class="py-3.5 px-4 text-[#2DD4BF] font-medium">GPL-3.0, 100% local &amp; free</td>
             </tr>
           </tbody>
         </table>
@@ -378,19 +512,19 @@ tailwind.config = {
     </div>
   </section>
 
-  <!-- FULL-BLEED INSTALLATION SECTION -->
-  <section id="install" class="py-20 bg-[#0F172A] text-white">
+  <!-- INSTALLATION SECTION -->
+  <section id="install" class="py-20">
     <div class="max-w-5xl mx-auto px-6">
       <div class="grid lg:grid-cols-12 gap-10 items-start">
         <div class="lg:col-span-5">
-          <p class="text-xs font-medium uppercase tracking-wider text-teal-400">Installation</p>
+          <p class="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">Installation</p>
           <h2 class="font-display text-3xl sm:text-4xl text-white mt-2">Up and running in two minutes.</h2>
-          <p class="text-slate-300 text-sm leading-relaxed mt-3 max-w-prose">
-            Download the repository ZIP and run the installer for your OS—no Git required. Or drag the 6 folders from <code class="font-mono text-teal-300">plugins/</code> straight into your GIMP plug-ins directory.
+          <p class="text-zinc-400 text-sm leading-relaxed mt-3 max-w-prose">
+            Download the repository ZIP and run the installer for your OS—no Git required. Or drag the 6 folders from <code class="font-mono text-zinc-200">plugins/</code> straight into your GIMP plug-ins directory.
           </p>
 
           <div class="mt-6">
-            <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium text-sm px-5 py-3 rounded-md transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0F172A] focus-visible:ring-teal-400">
+            <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium text-sm px-5 py-3 rounded-md border border-teal-400/20 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B] focus-visible:ring-[#2DD4BF]">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Suite ZIP
             </a>
@@ -398,61 +532,70 @@ tailwind.config = {
         </div>
 
         <div class="lg:col-span-7">
-          <div class="rounded-lg border border-slate-700 bg-slate-900 overflow-hidden">
+          <div class="rounded-lg border border-white/10 bg-[#111114] overflow-hidden">
             <!-- OS Tabs -->
-            <div role="tablist" aria-label="Operating system install instructions" class="flex border-b border-slate-700 bg-slate-800/60 px-2 pt-2 gap-1">
-              <button type="button" role="tab" aria-selected="true" aria-controls="panel-win" id="tab-win" class="os-tab cursor-pointer px-4 py-2 text-xs font-medium rounded-t-md bg-slate-900 text-white border border-b-0 border-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400">
+            <div role="tablist" aria-label="Operating system install instructions" class="flex border-b border-white/10 bg-[#18181B] px-2 pt-2 gap-1">
+              <button type="button" role="tab" aria-selected="true" aria-controls="panel-win" id="tab-win" class="os-tab cursor-pointer px-4 py-2 text-xs font-medium rounded-t-md bg-[#111114] text-white border border-b-0 border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 Windows
               </button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="panel-linux" id="tab-linux" class="os-tab cursor-pointer px-4 py-2 text-xs font-medium rounded-t-md text-slate-300 hover:text-white border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400">
+              <button type="button" role="tab" aria-selected="false" aria-controls="panel-linux" id="tab-linux" class="os-tab cursor-pointer px-4 py-2 text-xs font-medium rounded-t-md text-zinc-400 hover:text-white border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 Linux / Flatpak
               </button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="panel-mac" id="tab-mac" class="os-tab cursor-pointer px-4 py-2 text-xs font-medium rounded-t-md text-slate-300 hover:text-white border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400">
+              <button type="button" role="tab" aria-selected="false" aria-controls="panel-mac" id="tab-mac" class="os-tab cursor-pointer px-4 py-2 text-xs font-medium rounded-t-md text-zinc-400 hover:text-white border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
                 macOS
               </button>
             </div>
 
             <!-- Windows Panel -->
             <div id="panel-win" role="tabpanel" aria-labelledby="tab-win" class="p-6 space-y-4 text-sm">
-              <ol class="space-y-3 text-slate-300">
+              <ol class="space-y-3 text-zinc-300">
                 <li><strong class="text-white">1.</strong> Download and extract the Suite ZIP anywhere.</li>
-                <li><strong class="text-white">2.</strong> Double-click <code class="font-mono text-teal-300 bg-slate-800 px-1.5 py-0.5 rounded-sm">install.bat</code> to copy all 6 plugins into <code class="font-mono text-slate-200">%APPDATA%\GIMP\3.2\plug-ins\</code>.</li>
+                <li><strong class="text-white">2.</strong> Double-click <code class="font-mono text-[#2DD4BF] bg-[#18181B] px-1.5 py-0.5 rounded-sm border border-white/10">install.bat</code> to copy all 6 plugins into <code class="font-mono text-zinc-200">%APPDATA%\GIMP\3.2\plug-ins\</code>.</li>
                 <li><strong class="text-white">3.</strong> Restart GIMP 3.</li>
               </ol>
-              <div class="rounded-md bg-slate-950 border border-slate-800 p-3.5 font-mono text-xs text-slate-300 overflow-x-auto">
-                <div class="text-slate-400"># Optional (with Git):</div>
-                <div>git clone https://github.com/bunnywaffle/gimp-pro-suite.git</div>
-                <div>cd gimp-pro-suite &amp;&amp; .\install.bat</div>
+              <div class="relative rounded-md bg-[#09090B] border border-white/10 p-3.5 font-mono text-xs text-zinc-300 overflow-x-auto">
+                <div class="text-zinc-500"># Optional (with Git):</div>
+                <div id="cmd-win">git clone https://github.com/bunnywaffle/gimp-pro-suite.git &amp;&amp; cd gimp-pro-suite &amp;&amp; .\install.bat</div>
+                <button type="button" data-copy="cmd-win" aria-label="Copy Windows install command" class="copy-btn cursor-pointer absolute top-2.5 right-2.5 px-2 py-1 text-[11px] font-sans font-medium rounded-sm bg-[#18181B] hover:bg-zinc-800 text-zinc-300 border border-white/10 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                  Copy
+                </button>
               </div>
             </div>
 
             <!-- Linux / Flatpak Panel -->
             <div id="panel-linux" role="tabpanel" aria-labelledby="tab-linux" class="p-6 space-y-4 text-sm hidden">
-              <p class="text-slate-300">
-                Supports both native (<code class="font-mono text-slate-200">~/.config/GIMP/3.2/plug-ins/</code>) and Flatpak (<code class="font-mono text-slate-200">~/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins/</code>). When both exist, <code class="font-mono text-teal-300">install.sh</code> prompts you to choose.
+              <p class="text-zinc-300">
+                Supports both native (<code class="font-mono text-zinc-200">~/.config/GIMP/3.2/plug-ins/</code>) and Flatpak (<code class="font-mono text-zinc-200">~/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins/</code>). When both exist, <code class="font-mono text-[#2DD4BF]">install.sh</code> prompts you to choose.
               </p>
-              <div class="rounded-md bg-slate-950 border border-slate-800 p-3.5 font-mono text-xs text-slate-300 overflow-x-auto space-y-1">
-                <div>chmod +x install.sh</div>
-                <div>./install.sh <span class="text-slate-400"># or ./install.sh --flatpak</span></div>
+              <div class="relative rounded-md bg-[#09090B] border border-white/10 p-3.5 font-mono text-xs text-zinc-300 overflow-x-auto space-y-1">
+                <div id="cmd-linux">chmod +x install.sh &amp;&amp; ./install.sh --flatpak</div>
+                <button type="button" data-copy="cmd-linux" aria-label="Copy Linux install command" class="copy-btn cursor-pointer absolute top-2 right-2.5 px-2 py-1 text-[11px] font-sans font-medium rounded-sm bg-[#18181B] hover:bg-zinc-800 text-zinc-300 border border-white/10 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                  Copy
+                </button>
               </div>
-              <div class="rounded-md bg-slate-950 border border-slate-800 p-3.5 font-mono text-xs text-slate-300 overflow-x-auto space-y-1">
-                <div class="text-slate-400"># Flatpak AI worker venv (sam3_select):</div>
-                <div>flatpak run --command=python3 org.gimp.GIMP -m venv ~/.var/app/org.gimp.GIMP/data/sam3-venv</div>
-                <div>~/.var/app/org.gimp.GIMP/data/sam3-venv/bin/pip install torch torchvision transformers pillow numpy opencv-python-headless ultralytics</div>
-                <div>flatpak override --user --env=VIRTUAL_ENV=/var/data/sam3-venv org.gimp.GIMP</div>
+              <div class="relative rounded-md bg-[#09090B] border border-white/10 p-3.5 font-mono text-xs text-zinc-300 overflow-x-auto space-y-1">
+                <div class="text-zinc-500"># Flatpak AI worker venv (sam3_select):</div>
+                <div id="cmd-flatpak">flatpak run --command=python3 org.gimp.GIMP -m venv ~/.var/app/org.gimp.GIMP/data/sam3-venv
+~/.var/app/org.gimp.GIMP/data/sam3-venv/bin/pip install torch torchvision transformers pillow numpy opencv-python-headless ultralytics
+flatpak override --user --env=VIRTUAL_ENV=/var/data/sam3-venv org.gimp.GIMP</div>
+                <button type="button" data-copy="cmd-flatpak" aria-label="Copy Flatpak VIRTUAL_ENV setup commands" class="copy-btn cursor-pointer absolute top-2.5 right-2.5 px-2 py-1 text-[11px] font-sans font-medium rounded-sm bg-[#18181B] hover:bg-zinc-800 text-zinc-300 border border-white/10 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                  Copy
+                </button>
               </div>
             </div>
 
             <!-- macOS Panel -->
             <div id="panel-mac" role="tabpanel" aria-labelledby="tab-mac" class="p-6 space-y-4 text-sm hidden">
-              <ol class="space-y-3 text-slate-300">
+              <ol class="space-y-3 text-zinc-300">
                 <li><strong class="text-white">1.</strong> Download and extract the Suite ZIP.</li>
-                <li><strong class="text-white">2.</strong> Run <code class="font-mono text-teal-300 bg-slate-800 px-1.5 py-0.5 rounded-sm">./install.sh</code> to install into <code class="font-mono text-slate-200">~/Library/Application Support/GIMP/3.2/plug-ins/</code>.</li>
+                <li><strong class="text-white">2.</strong> Run <code class="font-mono text-[#2DD4BF] bg-[#18181B] px-1.5 py-0.5 rounded-sm border border-white/10">./install.sh</code> to install into <code class="font-mono text-zinc-200">~/Library/Application Support/GIMP/3.2/plug-ins/</code>.</li>
                 <li><strong class="text-white">3.</strong> Restart GIMP 3.</li>
               </ol>
-              <div class="rounded-md bg-slate-950 border border-slate-800 p-3.5 font-mono text-xs text-slate-300 overflow-x-auto space-y-1">
-                <div>cd gimp-pro-suite-main</div>
-                <div>chmod +x install.sh &amp;&amp; ./install.sh</div>
+              <div class="relative rounded-md bg-[#09090B] border border-white/10 p-3.5 font-mono text-xs text-zinc-300 overflow-x-auto">
+                <div id="cmd-mac">cd gimp-pro-suite-main &amp;&amp; chmod +x install.sh &amp;&amp; ./install.sh</div>
+                <button type="button" data-copy="cmd-mac" aria-label="Copy macOS install command" class="copy-btn cursor-pointer absolute top-2 right-2.5 px-2 py-1 text-[11px] font-sans font-medium rounded-sm bg-[#18181B] hover:bg-zinc-800 text-zinc-300 border border-white/10 transition-ui focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]">
+                  Copy
+                </button>
               </div>
             </div>
           </div>
@@ -462,49 +605,49 @@ tailwind.config = {
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="py-16">
+  <section id="faq" class="py-16 border-t border-white/10 bg-[#111114]/50">
     <div class="max-w-3xl mx-auto px-6">
-      <p class="text-xs font-medium uppercase tracking-wider text-[#0F766E]">FAQ</p>
-      <h2 class="font-display text-3xl text-ink mt-2">Common questions</h2>
+      <p class="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">FAQ</p>
+      <h2 class="font-display text-3xl text-white mt-2">Common questions</h2>
 
-      <div class="mt-8 rounded-lg border border-slate-200 bg-white divide-y divide-slate-200">
+      <div class="mt-8 rounded-lg border border-white/10 bg-[#111114] divide-y divide-white/10">
         <details class="group p-5" open>
-          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md">
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] rounded-md">
             <span>What if I do not have Git installed?</span>
-            <svg class="w-4 h-4 text-muted shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="w-4 h-4 text-zinc-400 shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
-          <p class="text-sm text-muted leading-relaxed mt-3">
-            Git is not required. Download the <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="text-[#0F766E] underline font-medium">Suite ZIP</a>, extract it, and double-click <code class="font-mono text-ink">install.bat</code> (Windows) or run <code class="font-mono text-ink">./install.sh</code> (Linux/macOS). You can also drag the 6 folders inside <code class="font-mono text-ink">plugins/</code> directly into your GIMP plug-ins directory.
+          <p class="text-sm text-zinc-400 leading-relaxed mt-3">
+            Git is not required. Download the <a href="https://github.com/bunnywaffle/gimp-pro-suite/archive/refs/heads/main.zip" class="text-[#2DD4BF] underline font-medium">Suite ZIP</a>, extract it, and double-click <code class="font-mono text-zinc-200">install.bat</code> (Windows) or run <code class="font-mono text-zinc-200">./install.sh</code> (Linux/macOS). You can also drag the 6 folders inside <code class="font-mono text-zinc-200">plugins/</code> directly into your GIMP plug-ins directory.
           </p>
         </details>
 
         <details class="group p-5">
-          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md">
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] rounded-md">
             <span>Do I need to install all 6 plugins?</span>
-            <svg class="w-4 h-4 text-muted shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="w-4 h-4 text-zinc-400 shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
-          <p class="text-sm text-muted leading-relaxed mt-3">
-            No. Each plugin is standalone and does not depend on the others. You can copy only the folders you want from <code class="font-mono text-ink">plugins/</code>.
+          <p class="text-sm text-zinc-400 leading-relaxed mt-3">
+            No. Each plugin is standalone and does not depend on the others. You can copy only the folders you want from <code class="font-mono text-zinc-200">plugins/</code>.
           </p>
         </details>
 
         <details class="group p-5">
-          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md">
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] rounded-md">
             <span>Does this work with GIMP 2.10?</span>
-            <svg class="w-4 h-4 text-muted shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="w-4 h-4 text-zinc-400 shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
-          <p class="text-sm text-muted leading-relaxed mt-3">
+          <p class="text-sm text-zinc-400 leading-relaxed mt-3">
             No. These plugins target GIMP 3.0 / 3.2+ and its Python 3 GObject Introspection API and GEGL non-destructive editing engine.
           </p>
         </details>
 
         <details class="group p-5">
-          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F766E] rounded-md">
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-medium text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] rounded-md">
             <span>Does SAM 3 Interactive Select run offline?</span>
-            <svg class="w-4 h-4 text-muted shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="w-4 h-4 text-zinc-400 shrink-0 group-open:rotate-180 transition-ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
-          <p class="text-sm text-muted leading-relaxed mt-3">
-            Yes. All inference runs locally on your CPU or GPU. On the first AI run, SAM 2 tiny (~156 MB) downloads once into <code class="font-mono text-ink">sam3_select/models/</code>; after that, no network connection is needed.
+          <p class="text-sm text-zinc-400 leading-relaxed mt-3">
+            Yes. All inference runs locally on your CPU or GPU. On the first AI run, SAM 2 tiny (~156 MB) downloads once into <code class="font-mono text-zinc-200">sam3_select/models/</code>; after that, no network connection is needed.
           </p>
         </details>
       </div>
@@ -513,41 +656,58 @@ tailwind.config = {
 </main>
 
 <!-- FOOTER -->
-<footer class="border-t border-slate-200 bg-white py-10">
-  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-muted">
+<footer class="border-t border-white/10 bg-[#09090B] py-10">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-zinc-400">
     <div class="flex items-center gap-2.5">
       <span class="w-6 h-6 rounded-sm bg-[#0F766E] text-white grid place-items-center font-display text-[11px]" aria-hidden="true">G3</span>
-      <span class="font-medium text-ink">GIMP Pro Suite</span>
+      <span class="font-medium text-white">GIMP Pro Suite</span>
       <span>·</span>
       <span>GPL-3.0 · Not affiliated with GIMP or Adobe.</span>
     </div>
     <div class="flex items-center gap-5">
-      <a href="https://github.com/bunnywaffle/gimp-pro-suite" target="_blank" rel="noopener noreferrer" class="hover:text-ink transition-ui">Repository</a>
-      <a href="https://github.com/bunnywaffle/gimp-pro-suite/issues" target="_blank" rel="noopener noreferrer" class="hover:text-ink transition-ui">Issues</a>
-      <a href="https://github.com/bunnywaffle" target="_blank" rel="noopener noreferrer" class="hover:text-ink transition-ui">bunnywaffle</a>
+      <a href="https://github.com/bunnywaffle/gimp-pro-suite" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-ui">Repository</a>
+      <a href="https://github.com/bunnywaffle/gimp-pro-suite/issues" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-ui">Issues</a>
+      <a href="https://github.com/bunnywaffle" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-ui">bunnywaffle</a>
     </div>
   </div>
 </footer>
 
 <script>
   (function () {
-    const tabs = document.querySelectorAll('.os-tab');
-    const panels = document.querySelectorAll('[role="tabpanel"]');
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        tabs.forEach(function (t) {
-          t.setAttribute('aria-selected', 'false');
-          t.classList.remove('bg-slate-900', 'text-white', 'border-slate-700');
-          t.classList.add('text-slate-300', 'border-transparent');
+    function wireTabs(tabSelector, panelSelector, activeClasses, inactiveClasses) {
+      var tabs = document.querySelectorAll(tabSelector);
+      var panels = document.querySelectorAll(panelSelector);
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) {
+            t.setAttribute('aria-selected', 'false');
+            activeClasses.forEach(function (c) { t.classList.remove(c); });
+            inactiveClasses.forEach(function (c) { t.classList.add(c); });
+          });
+          panels.forEach(function (p) {
+            p.classList.add('hidden');
+          });
+          tab.setAttribute('aria-selected', 'true');
+          inactiveClasses.forEach(function (c) { tab.classList.remove(c); });
+          activeClasses.forEach(function (c) { tab.classList.add(c); });
+          var target = document.getElementById(tab.getAttribute('aria-controls'));
+          if (target) target.classList.remove('hidden');
         });
-        panels.forEach(function (p) {
-          p.classList.add('hidden');
+      });
+    }
+
+    wireTabs('.wb-tab', '#wb-sam, #wb-warp, #wb-nde', ['bg-[#0F766E]', 'text-white'], ['text-zinc-400']);
+    wireTabs('.os-tab', '#panel-win, #panel-linux, #panel-mac', ['bg-[#111114]', 'text-white', 'border-white/10'], ['text-zinc-400', 'border-transparent']);
+
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.getAttribute('data-copy'));
+        if (!el || !navigator.clipboard) return;
+        navigator.clipboard.writeText(el.textContent.trim()).then(function () {
+          var prev = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = prev; }, 1400);
         });
-        tab.setAttribute('aria-selected', 'true');
-        tab.classList.add('bg-slate-900', 'text-white', 'border-slate-700');
-        tab.classList.remove('text-slate-300', 'border-transparent');
-        const target = document.getElementById(tab.getAttribute('aria-controls'));
-        if (target) target.classList.remove('hidden');
       });
     });
   })();
