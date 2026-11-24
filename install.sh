@@ -18,10 +18,31 @@ echo "  Installing GIMP Pro Suite (All 6 Plugins)"
 echo "============================================================"
 echo
 
+# Parse optional flags
+TARGET_MODE=""
+for arg in "$@"; do
+  case "$arg" in
+    --flatpak) TARGET_MODE="flatpak" ;;
+    --native)  TARGET_MODE="native" ;;
+    -h|--help)
+      echo "Usage: $0 [--flatpak | --native]"
+      echo "  --flatpak   Install into Flatpak GIMP (~/.var/app/org.gimp.GIMP/config/GIMP/)"
+      echo "  --native    Install into native GIMP (~/.config/GIMP/)"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $arg" >&2
+      echo "Usage: $0 [--flatpak | --native]" >&2
+      exit 1
+      ;;
+  esac
+done
+
 # Locate GIMP plug-ins folder
-GIMP_BASE=""
+GIMP_TARGETS=()
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # macOS
+  GIMP_BASE=""
   for ver in 3.2 3.0 2.99; do
     p="$HOME/Library/Application Support/GIMP/$ver/plug-ins"
     if [ -d "$p" ]; then GIMP_BASE="$p"; break; fi
@@ -29,112 +50,148 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   if [ -z "$GIMP_BASE" ]; then
     GIMP_BASE="$HOME/Library/Application Support/GIMP/3.2/plug-ins"
   fi
+  GIMP_TARGETS=("$GIMP_BASE")
 else
-  # Linux (check standard and flatpak locations)
+  # Linux (check standard and Flatpak locations)
+  NATIVE_DIR=""
   for ver in 3.2 3.0 2.99; do
     p="$HOME/.config/GIMP/$ver/plug-ins"
-    if [ -d "$p" ]; then GIMP_BASE="$p"; break; fi
+    if [ -d "$p" ]; then NATIVE_DIR="$p"; break; fi
   done
-  if [ -z "$GIMP_BASE" ]; then
-    # Flatpak fallback
-    fp="$HOME/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins"
-    if [ -d "$fp" ]; then
-      GIMP_BASE="$fp"
+
+  FLATPAK_DIR=""
+  for ver in 3.2 3.0 2.99; do
+    p="$HOME/.var/app/org.gimp.GIMP/config/GIMP/$ver/plug-ins"
+    if [ -d "$p" ]; then FLATPAK_DIR="$p"; break; fi
+  done
+
+  if [ "$TARGET_MODE" = "flatpak" ]; then
+    GIMP_TARGETS=("${FLATPAK_DIR:-$HOME/.var/app/org.gimp.GIMP/config/GIMP/3.2/plug-ins}")
+  elif [ "$TARGET_MODE" = "native" ]; then
+    GIMP_TARGETS=("${NATIVE_DIR:-$HOME/.config/GIMP/3.2/plug-ins}")
+  elif [ -n "$NATIVE_DIR" ] && [ -n "$FLATPAK_DIR" ]; then
+    if [ -t 0 ]; then
+      echo "Both native and Flatpak GIMP plug-in directories were found:"
+      echo "  1) Native:  $NATIVE_DIR"
+      echo "  2) Flatpak: $FLATPAK_DIR"
+      echo "  3) Both"
+      read -r -p "Choose target [1/2/3] (default: 1): " choice
+      case "${choice:-1}" in
+        2) GIMP_TARGETS=("$FLATPAK_DIR") ;;
+        3) GIMP_TARGETS=("$NATIVE_DIR" "$FLATPAK_DIR") ;;
+        *) GIMP_TARGETS=("$NATIVE_DIR") ;;
+      esac
+      echo
     else
-      GIMP_BASE="$HOME/.config/GIMP/3.2/plug-ins"
+      echo "Note: Both native and Flatpak GIMP found; defaulting to native (pass --flatpak for Flatpak)."
+      GIMP_TARGETS=("$NATIVE_DIR")
     fi
+  elif [ -n "$FLATPAK_DIR" ]; then
+    GIMP_TARGETS=("$FLATPAK_DIR")
+  elif [ -n "$NATIVE_DIR" ]; then
+    GIMP_TARGETS=("$NATIVE_DIR")
+  else
+    GIMP_TARGETS=("$HOME/.config/GIMP/3.2/plug-ins")
   fi
 fi
 
-echo "Target plug-ins directory:"
-echo "  $GIMP_BASE"
-echo
+install_into() {
+  local GIMP_BASE="$1"
+  echo "Target plug-ins directory:"
+  echo "  $GIMP_BASE"
+  echo
 
-# 1. Mesh Warp
-echo "[1/6] Installing Mesh Warp & Transform Presets..."
-MESH_SRC="$SCRIPT_DIR/plugins/mesh-warp"
-MESH_DEST="$GIMP_BASE/mesh-warp"
-if [ -f "$MESH_SRC/mesh-warp.py" ]; then
-  mkdir -p "$MESH_DEST"
-  cp "$MESH_SRC"/*.py "$MESH_DEST/"
-  chmod +x "$MESH_DEST"/*.py
-  echo "      [OK] Installed to: $MESH_DEST"
-else
-  echo "      [WARN] $MESH_SRC not found. Skipping."
-fi
-
-# 2. SAM 3 Interactive Select
-echo "[2/6] Installing SAM 3 AI Interactive Select..."
-SAM_SRC="$SCRIPT_DIR/plugins/sam3_select"
-SAM_DEST="$GIMP_BASE/sam3_select"
-if [ -f "$SAM_SRC/sam3_select.py" ]; then
-  mkdir -p "$SAM_DEST/models"
-  cp "$SAM_SRC/sam3_select.py" "$SAM_DEST/"
-  chmod +x "$SAM_DEST/sam3_select.py"
-  if compgen -G "$SAM_SRC/models/*.pt" > /dev/null; then
-    cp "$SAM_SRC/models"/*.pt "$SAM_DEST/models/" 2>/dev/null || true
+  # 1. Mesh Warp
+  echo "[1/6] Installing Mesh Warp & Transform Presets..."
+  MESH_SRC="$SCRIPT_DIR/plugins/mesh-warp"
+  MESH_DEST="$GIMP_BASE/mesh-warp"
+  if [ -f "$MESH_SRC/mesh-warp.py" ]; then
+    mkdir -p "$MESH_DEST"
+    cp "$MESH_SRC"/*.py "$MESH_DEST/"
+    chmod +x "$MESH_DEST"/*.py
+    echo "      [OK] Installed to: $MESH_DEST"
+  else
+    echo "      [WARN] $MESH_SRC not found. Skipping."
   fi
-  echo "      [OK] Installed to: $SAM_DEST"
-else
-  echo "      [WARN] $SAM_SRC not found. Skipping."
-fi
 
-# 3. Adjustment Layers & Layer Effects
-echo "[3/6] Installing Adjustment Layers & Layer Effects..."
-ADJ_SRC="$SCRIPT_DIR/plugins/adjustment-layer"
-ADJ_DEST="$GIMP_BASE/adjustment-layer"
-if [ -f "$ADJ_SRC/adjustment-layer.py" ]; then
-  mkdir -p "$ADJ_DEST"
-  cp "$ADJ_SRC"/*.py "$ADJ_DEST/"
-  chmod +x "$ADJ_DEST"/*.py
-  echo "      [OK] Installed to: $ADJ_DEST"
-else
-  echo "      [WARN] $ADJ_SRC not found. Skipping."
-fi
-
-# 4. Vector Shape Tool
-echo "[4/6] Installing Vector Shape Tool..."
-SHAPE_SRC="$SCRIPT_DIR/plugins/gimp-shape-tool"
-SHAPE_DEST="$GIMP_BASE/gimp-shape-tool"
-if [ -f "$SHAPE_SRC/gimp-shape-tool.py" ]; then
-  mkdir -p "$SHAPE_DEST"
-  cp "$SHAPE_SRC"/*.py "$SHAPE_DEST/"
-  chmod +x "$SHAPE_DEST"/*.py
-  echo "      [OK] Installed to: $SHAPE_DEST"
-else
-  echo "      [WARN] $SHAPE_SRC not found. Skipping."
-fi
-
-# 5. Quick Selection Brush Suite
-echo "[5/6] Installing Quick Selection Brush Suite..."
-QS_SRC="$SCRIPT_DIR/plugins/GIMP-Quick-Selection"
-QS_DEST="$GIMP_BASE/GIMP-Quick-Selection"
-if [ -f "$QS_SRC/GIMP-Quick-Selection.py" ]; then
-  mkdir -p "$QS_DEST"
-  cp "$QS_SRC"/*.py "$QS_DEST/"
-  chmod +x "$QS_DEST"/*.py
-  echo "      [OK] Installed to: $QS_DEST"
-else
-  echo "      [WARN] $QS_SRC not found. Skipping."
-fi
-
-# 6. Content-Aware Fill
-echo "[6/6] Installing Content-Aware Fill..."
-CAF_SRC="$SCRIPT_DIR/plugins/content-aware-fill"
-CAF_DEST="$GIMP_BASE/content-aware-fill"
-if [ -f "$CAF_SRC/content-aware-fill.py" ]; then
-  mkdir -p "$CAF_DEST"
-  cp "$CAF_SRC"/*.py "$CAF_DEST/"
-  if [ -d "$CAF_SRC/caf_engine" ]; then
-    mkdir -p "$CAF_DEST/caf_engine"
-    cp "$CAF_SRC/caf_engine"/*.py "$CAF_DEST/caf_engine/"
-    chmod +x "$CAF_DEST/caf_engine"/*.py 2>/dev/null || true
+  # 2. SAM 3 Interactive Select
+  echo "[2/6] Installing SAM 3 AI Interactive Select..."
+  SAM_SRC="$SCRIPT_DIR/plugins/sam3_select"
+  SAM_DEST="$GIMP_BASE/sam3_select"
+  if [ -f "$SAM_SRC/sam3_select.py" ]; then
+    mkdir -p "$SAM_DEST/models"
+    cp "$SAM_SRC/sam3_select.py" "$SAM_DEST/"
+    chmod +x "$SAM_DEST/sam3_select.py"
+    if compgen -G "$SAM_SRC/models/*.pt" > /dev/null; then
+      cp "$SAM_SRC/models"/*.pt "$SAM_DEST/models/" 2>/dev/null || true
+    fi
+    echo "      [OK] Installed to: $SAM_DEST"
+  else
+    echo "      [WARN] $SAM_SRC not found. Skipping."
   fi
-  chmod +x "$CAF_DEST"/*.py
-  echo "      [OK] Installed to: $CAF_DEST"
-else
-  echo "      [WARN] $CAF_SRC not found. Skipping."
-fi
+
+  # 3. Adjustment Layers & Layer Effects
+  echo "[3/6] Installing Adjustment Layers & Layer Effects..."
+  ADJ_SRC="$SCRIPT_DIR/plugins/adjustment-layer"
+  ADJ_DEST="$GIMP_BASE/adjustment-layer"
+  if [ -f "$ADJ_SRC/adjustment-layer.py" ]; then
+    mkdir -p "$ADJ_DEST"
+    cp "$ADJ_SRC"/*.py "$ADJ_DEST/"
+    chmod +x "$ADJ_DEST"/*.py
+    echo "      [OK] Installed to: $ADJ_DEST"
+  else
+    echo "      [WARN] $ADJ_SRC not found. Skipping."
+  fi
+
+  # 4. Vector Shape Tool
+  echo "[4/6] Installing Vector Shape Tool..."
+  SHAPE_SRC="$SCRIPT_DIR/plugins/gimp-shape-tool"
+  SHAPE_DEST="$GIMP_BASE/gimp-shape-tool"
+  if [ -f "$SHAPE_SRC/gimp-shape-tool.py" ]; then
+    mkdir -p "$SHAPE_DEST"
+    cp "$SHAPE_SRC"/*.py "$SHAPE_DEST/"
+    chmod +x "$SHAPE_DEST"/*.py
+    echo "      [OK] Installed to: $SHAPE_DEST"
+  else
+    echo "      [WARN] $SHAPE_SRC not found. Skipping."
+  fi
+
+  # 5. Quick Selection Brush Suite
+  echo "[5/6] Installing Quick Selection Brush Suite..."
+  QS_SRC="$SCRIPT_DIR/plugins/GIMP-Quick-Selection"
+  QS_DEST="$GIMP_BASE/GIMP-Quick-Selection"
+  if [ -f "$QS_SRC/GIMP-Quick-Selection.py" ]; then
+    mkdir -p "$QS_DEST"
+    cp "$QS_SRC"/*.py "$QS_DEST/"
+    chmod +x "$QS_DEST"/*.py
+    echo "      [OK] Installed to: $QS_DEST"
+  else
+    echo "      [WARN] $QS_SRC not found. Skipping."
+  fi
+
+  # 6. Content-Aware Fill
+  echo "[6/6] Installing Content-Aware Fill..."
+  CAF_SRC="$SCRIPT_DIR/plugins/content-aware-fill"
+  CAF_DEST="$GIMP_BASE/content-aware-fill"
+  if [ -f "$CAF_SRC/content-aware-fill.py" ]; then
+    mkdir -p "$CAF_DEST"
+    cp "$CAF_SRC"/*.py "$CAF_DEST/"
+    if [ -d "$CAF_SRC/caf_engine" ]; then
+      mkdir -p "$CAF_DEST/caf_engine"
+      cp "$CAF_SRC/caf_engine"/*.py "$CAF_DEST/caf_engine/"
+      chmod +x "$CAF_DEST/caf_engine"/*.py 2>/dev/null || true
+    fi
+    chmod +x "$CAF_DEST"/*.py
+    echo "      [OK] Installed to: $CAF_DEST"
+  else
+    echo "      [WARN] $CAF_SRC not found. Skipping."
+  fi
+  echo
+}
+
+for target in "${GIMP_TARGETS[@]}"; do
+  install_into "$target"
+done
 
 echo
 echo "============================================================"

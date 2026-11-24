@@ -74,7 +74,32 @@ cd gimp-pro-suite
 
 # Linux / macOS:
 chmod +x install.sh && ./install.sh
+# Or target Flatpak GIMP explicitly on Linux:
+./install.sh --flatpak
 ```
+
+---
+
+### Linux Flatpak Users (`org.gimp.GIMP`)
+
+If you use the Flatpak version of GIMP (or have both native and Flatpak GIMP installed):
+
+1. **Install plug-ins to Flatpak**:
+   ```bash
+   ./install.sh --flatpak
+   ```
+   *(If both native and Flatpak config folders exist, running `./install.sh` interactively also lets you choose Native, Flatpak, or Both.)*
+
+2. **Enable the `sam3_select` AI backend inside the Flatpak sandbox**:
+   Because Flatpak isolates the host `/usr` filesystem, create the Python virtual environment inside Flatpak's persistent data directory and expose `VIRTUAL_ENV`:
+   ```bash
+   # Create the venv inside Flatpak's persistent data folder
+   flatpak run --command=python3 org.gimp.GIMP -m venv ~/.var/app/org.gimp.GIMP/data/sam3-venv
+   ~/.var/app/org.gimp.GIMP/data/sam3-venv/bin/pip install torch torchvision transformers pillow numpy opencv-python-headless ultralytics
+
+   # Expose VIRTUAL_ENV to the Flatpak sandbox (mapped to /var/data inside the sandbox)
+   flatpak override --user --env=VIRTUAL_ENV=/var/data/sam3-venv org.gimp.GIMP
+   ```
 
 ---
 

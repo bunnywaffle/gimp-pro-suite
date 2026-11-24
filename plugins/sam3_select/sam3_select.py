@@ -1283,7 +1283,7 @@ if IN_GIMP and "--sam3-worker" not in sys.argv and \
             if not p:
                 return
             try:
-                key = os.path.realpath(os.path.abspath(p))
+                key = os.path.normpath(os.path.abspath(p))
             except Exception:
                 key = p
             if key not in seen and os.path.isfile(key):
